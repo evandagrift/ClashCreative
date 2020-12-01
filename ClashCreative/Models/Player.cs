@@ -21,8 +21,12 @@ namespace ClashCreative.Models
 
         public string Role { get; set; }
         public string LastSeen { get; set; }
-        public int DeckId { get ; set; }
-        public Deck CurrentDeck { get; set; }
+
+        //change this to Current Deck Id
+        public int CurrentDeckId { get ; set; }
+
+        [NotMapped]
+        public List<Card> CurrentDeck { get; set; }
 
         public int ExpLevel { get; set; }
         public int Trophies { get; set; }

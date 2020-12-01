@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ClashCreative.Models
 {
+    [NotMapped]
     public class TeamMember
     {
-        public int TeamMemberId { get; set; }
         public string Tag { get; set; }
         public string Name { get; set; }
         public int StartingTrophies { get; set; }
@@ -32,6 +32,6 @@ namespace ClashCreative.Models
 
 
         [NotMapped]
-        public Deck Cards { get; set; }
+        public List<Card> Cards { get; set; }
     }
 }

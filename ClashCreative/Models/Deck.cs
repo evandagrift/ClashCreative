@@ -6,20 +6,23 @@ using System.Threading.Tasks;
 
 namespace ClashCreative.Models
 {
-    public class Deck : List<Card>
+    public class Deck 
     {
-        public Deck()
+        public Deck() { }
+        public Deck(List<Card> c)
         {
-            this.Capacity = NotMappedAttribute;
+            Card1Id = c[0].Id;
+            Card2Id = c[1].Id;
+            Card3Id = c[2].Id;
+            Card4Id = c[3].Id;
+            Card5Id = c[4].Id;
+            Card6Id = c[5].Id;
+            Card7Id = c[6].Id;
+            Card8Id = c[7].Id;
         }
 
-        public int DeckId { get; set; }
-
-        //lol I couldn't figure out how to stop Capacity from showing up so I'm tryin this
-
-        [NotMapped]
-        public int Capacity { get; set; }
-
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int DeckId { get; set;}
         public int Card1Id { get; set; } 
         public int Card2Id { get; set; }
         public int Card3Id { get; set; }
@@ -34,14 +37,14 @@ namespace ClashCreative.Models
         {
             List<int> sortedList = new List<int>();
 
-            sortedList.Add(this[0].Id);
-            sortedList.Add(this[1].Id);
-            sortedList.Add(this[2].Id);
-            sortedList.Add(this[3].Id);
-            sortedList.Add(this[4].Id);
-            sortedList.Add(this[5].Id);
-            sortedList.Add(this[6].Id);
-            sortedList.Add(this[7].Id);
+            sortedList.Add(Card1Id);
+            sortedList.Add(Card2Id);
+            sortedList.Add(Card3Id);
+            sortedList.Add(Card4Id);
+            sortedList.Add(Card5Id);
+            sortedList.Add(Card6Id);
+            sortedList.Add(Card7Id);
+            sortedList.Add(Card8Id);
 
             sortedList.Sort();
 
@@ -53,9 +56,9 @@ namespace ClashCreative.Models
             Card6Id = sortedList[5];
             Card7Id = sortedList[6];
             Card8Id = sortedList[7];
-
         }
     }
+
 }
 
 

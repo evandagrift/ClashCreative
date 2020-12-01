@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClashCreative.Migrations
 {
     [DbContext(typeof(ClashContext))]
-    [Migration("20201127145351_Initial_SQLServer")]
+    [Migration("20201130140950_Initial_SQLServer")]
     partial class Initial_SQLServer
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,12 @@ namespace ClashCreative.Migrations
                     b.Property<bool>("IsLadderTournament")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Team1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Team2Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
@@ -58,17 +64,12 @@ namespace ClashCreative.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("Card");
+                    b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("ClashCreative.Models.Clan", b =>
@@ -107,11 +108,6 @@ namespace ClashCreative.Migrations
             modelBuilder.Entity("ClashCreative.Models.Deck", b =>
                 {
                     b.Property<int>("DeckId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Capacity")
                         .HasColumnType("int");
 
                     b.Property<int>("Card1Id")
@@ -174,7 +170,7 @@ namespace ClashCreative.Migrations
                     b.Property<string>("ClanTag")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DeckId")
+                    b.Property<int>("CurrentDeckId")
                         .HasColumnType("int");
 
                     b.Property<int>("Donations")
@@ -218,37 +214,31 @@ namespace ClashCreative.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("ClashCreative.Models.TeamMember", b =>
+            modelBuilder.Entity("ClashCreative.Models.Team", b =>
                 {
-                    b.Property<int>("TeamMemberId")
+                    b.Property<int>("TeamId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Crowns")
-                        .HasColumnType("int");
-
-                    b.Property<int>("KingTowerHitPoints")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PrincessTowerA")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PrincessTowerB")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StartingTrophies")
-                        .HasColumnType("int");
+                    b.Property<string>("Name2")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tag")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TeamMemberId");
+                    b.Property<string>("Tag2")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("TeamMembers");
+                    b.Property<bool>("TwoVTwo")
+                        .HasColumnType("bit");
+
+                    b.HasKey("TeamId");
+
+                    b.ToTable("Team");
                 });
 
             modelBuilder.Entity("ClashCreative.Models.Battle", b =>
@@ -258,13 +248,6 @@ namespace ClashCreative.Migrations
                         .HasForeignKey("GameModeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ClashCreative.Models.Card", b =>
-                {
-                    b.HasOne("ClashCreative.Models.Player", null)
-                        .WithMany("CurrentDeck")
-                        .HasForeignKey("PlayerId");
                 });
 #pragma warning restore 612, 618
         }

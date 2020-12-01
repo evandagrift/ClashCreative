@@ -8,6 +8,19 @@ namespace ClashCreative.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Cards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cards", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Clans",
                 columns: table => new
                 {
@@ -30,9 +43,7 @@ namespace ClashCreative.Migrations
                 name: "Decks",
                 columns: table => new
                 {
-                    DeckId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Capacity = table.Column<int>(nullable: false),
+                    DeckId = table.Column<int>(nullable: false),
                     Card1Id = table.Column<int>(nullable: false),
                     Card2Id = table.Column<int>(nullable: false),
                     Card3Id = table.Column<int>(nullable: false),
@@ -71,7 +82,7 @@ namespace ClashCreative.Migrations
                     ClanTag = table.Column<string>(nullable: true),
                     Role = table.Column<string>(nullable: true),
                     LastSeen = table.Column<string>(nullable: true),
-                    DeckId = table.Column<int>(nullable: false),
+                    CurrentDeckId = table.Column<int>(nullable: false),
                     ExpLevel = table.Column<int>(nullable: false),
                     Trophies = table.Column<int>(nullable: false),
                     BestTrophies = table.Column<int>(nullable: false),
@@ -89,22 +100,20 @@ namespace ClashCreative.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeamMembers",
+                name: "Team",
                 columns: table => new
                 {
-                    TeamMemberId = table.Column<int>(nullable: false)
+                    TeamId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Tag = table.Column<string>(nullable: true),
+                    TwoVTwo = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    StartingTrophies = table.Column<int>(nullable: false),
-                    Crowns = table.Column<int>(nullable: false),
-                    KingTowerHitPoints = table.Column<int>(nullable: false),
-                    PrincessTowerA = table.Column<int>(nullable: false),
-                    PrincessTowerB = table.Column<int>(nullable: false)
+                    Tag = table.Column<string>(nullable: true),
+                    Name2 = table.Column<string>(nullable: true),
+                    Tag2 = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamMembers", x => x.TeamMemberId);
+                    table.PrimaryKey("PK_Team", x => x.TeamId);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,11 +122,13 @@ namespace ClashCreative.Migrations
                 {
                     BattleId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Team1Id = table.Column<int>(nullable: false),
+                    Team2Id = table.Column<int>(nullable: false),
                     Type = table.Column<string>(nullable: true),
                     BattleTime = table.Column<string>(nullable: true),
+                    DeckSelection = table.Column<string>(nullable: true),
                     IsLadderTournament = table.Column<bool>(nullable: false),
-                    GameModeId = table.Column<int>(nullable: false),
-                    DeckSelection = table.Column<string>(nullable: true)
+                    GameModeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -130,35 +141,10 @@ namespace ClashCreative.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Card",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Url = table.Column<string>(nullable: true),
-                    PlayerId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Card", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Card_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Battles_GameModeId",
                 table: "Battles",
                 column: "GameModeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Card_PlayerId",
-                table: "Card",
-                column: "PlayerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -167,7 +153,7 @@ namespace ClashCreative.Migrations
                 name: "Battles");
 
             migrationBuilder.DropTable(
-                name: "Card");
+                name: "Cards");
 
             migrationBuilder.DropTable(
                 name: "Clans");
@@ -176,13 +162,13 @@ namespace ClashCreative.Migrations
                 name: "Decks");
 
             migrationBuilder.DropTable(
-                name: "TeamMembers");
+                name: "Players");
+
+            migrationBuilder.DropTable(
+                name: "Team");
 
             migrationBuilder.DropTable(
                 name: "GameModes");
-
-            migrationBuilder.DropTable(
-                name: "Players");
         }
     }
 }
