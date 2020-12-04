@@ -1,12 +1,52 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace ClashCreative.Migrations
 {
-    public partial class Initial_SQLServer : Migration
+    public partial class Initial_MYSQL : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Battles",
+                columns: table => new
+                {
+                    BattleId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    BattleTime = table.Column<string>(nullable: true),
+                    Team1Name = table.Column<string>(nullable: true),
+                    Team1Id = table.Column<int>(nullable: false),
+                    Team1Win = table.Column<bool>(nullable: false),
+                    Team1StartingTrophies = table.Column<int>(nullable: false),
+                    Team1TrophyChange = table.Column<int>(nullable: false),
+                    Team1DeckA = table.Column<int>(nullable: false),
+                    Team1DeckB = table.Column<int>(nullable: false),
+                    Team1Crowns = table.Column<int>(nullable: false),
+                    Team1KingTowerHp = table.Column<int>(nullable: false),
+                    Team1PrincessTowerHpA = table.Column<int>(nullable: false),
+                    Team1PrincessTowerHpB = table.Column<int>(nullable: false),
+                    Team2Name = table.Column<string>(nullable: true),
+                    Team2Id = table.Column<int>(nullable: false),
+                    Team2Win = table.Column<bool>(nullable: false),
+                    Team2StartingTrophies = table.Column<int>(nullable: false),
+                    Team2TrophyChange = table.Column<int>(nullable: false),
+                    Team2DeckA = table.Column<int>(nullable: false),
+                    Team2DeckB = table.Column<int>(nullable: false),
+                    Team2Crowns = table.Column<int>(nullable: false),
+                    Team2KingTowerHp = table.Column<int>(nullable: false),
+                    Team2PrincessTowerHpA = table.Column<int>(nullable: false),
+                    Team2PrincessTowerHpB = table.Column<int>(nullable: false),
+                    Type = table.Column<string>(nullable: true),
+                    DeckSelection = table.Column<string>(nullable: true),
+                    IsLadderTournament = table.Column<bool>(nullable: false),
+                    GameModeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Battles", x => x.BattleId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Cards",
                 columns: table => new
@@ -25,7 +65,7 @@ namespace ClashCreative.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Tag = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Type = table.Column<string>(nullable: true),
@@ -62,8 +102,7 @@ namespace ClashCreative.Migrations
                 name: "GameModes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -76,7 +115,8 @@ namespace ClashCreative.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    TeamId = table.Column<int>(nullable: false),
                     Tag = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     ClanTag = table.Column<string>(nullable: true),
@@ -104,7 +144,8 @@ namespace ClashCreative.Migrations
                 columns: table => new
                 {
                     TeamId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    TeamName = table.Column<string>(nullable: true),
                     TwoVTwo = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Tag = table.Column<string>(nullable: true),
@@ -115,36 +156,6 @@ namespace ClashCreative.Migrations
                 {
                     table.PrimaryKey("PK_Team", x => x.TeamId);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "Battles",
-                columns: table => new
-                {
-                    BattleId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Team1Id = table.Column<int>(nullable: false),
-                    Team2Id = table.Column<int>(nullable: false),
-                    Type = table.Column<string>(nullable: true),
-                    BattleTime = table.Column<string>(nullable: true),
-                    DeckSelection = table.Column<string>(nullable: true),
-                    IsLadderTournament = table.Column<bool>(nullable: false),
-                    GameModeId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Battles", x => x.BattleId);
-                    table.ForeignKey(
-                        name: "FK_Battles_GameModes_GameModeId",
-                        column: x => x.GameModeId,
-                        principalTable: "GameModes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Battles_GameModeId",
-                table: "Battles",
-                column: "GameModeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -162,13 +173,13 @@ namespace ClashCreative.Migrations
                 name: "Decks");
 
             migrationBuilder.DropTable(
+                name: "GameModes");
+
+            migrationBuilder.DropTable(
                 name: "Players");
 
             migrationBuilder.DropTable(
                 name: "Team");
-
-            migrationBuilder.DropTable(
-                name: "GameModes");
         }
     }
 }

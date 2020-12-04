@@ -11,6 +11,7 @@ namespace ClashCreative.Models
     {
         [Key]
         public int TeamId { get; set; }
+        public string TeamName { get; set; }
         public bool TwoVTwo {get; set; }
         public string Name { get; set; }
         public string Tag { get; set; }

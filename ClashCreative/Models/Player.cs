@@ -11,6 +11,9 @@ namespace ClashCreative.Models
     {
         [Key]
         public int Id { get; set; }
+
+        public int TeamId { get; set; }
+
         public string Tag { get; set; }
         public string Name { get; set; }
 

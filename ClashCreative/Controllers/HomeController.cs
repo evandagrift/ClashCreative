@@ -34,15 +34,28 @@ namespace ClashCreative.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-      
+
 
 
 
         public async Task<IActionResult> Index()
         {
-            UpdateDB update = new UpdateDB(context,_clientFactory);
-            await update.Update();
-            return View();
+            // var player = await GetPlayerData("#29PGJURQL");
+            //var clan = await GetClanData(player.ClanTag);
+            ClashJson clashJson = new ClashJson(_clientFactory);
+            ClashDB clashDB = new ClashDB(context);
+            //battles.ForEach(b =>
+            //{
+            //    var team = b.Team;
+            //    var opponent = b.Opponent;
+
+            //    clashDB.GetSetTeamId(team);
+            //    clashDB.GetSetTeamId(opponent);   
+
+            //});
+            await clashDB.AddClanMembersDataToDB("#8CYPL8R",clashJson);
+
+             return View();
         }
     }
 }
