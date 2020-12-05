@@ -53,8 +53,10 @@ namespace ClashCreative.Controllers
             //    clashDB.GetSetTeamId(opponent);   
 
             //});
-            await clashDB.AddClanMembersDataToDB("#8CYPL8R",clashJson);
-
+            //
+          await clashDB.AddClanMembersDataToDB("#8CYPL8R",clashJson);
+            //List<Battle> battles = await clashJson.GetListOfBattles("#9V88U2CG2");
+            //await clashDB.SaveBattles("#9V88U2CG2", battles);
              return View();
         }
     }

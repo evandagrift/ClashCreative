@@ -57,41 +57,63 @@ namespace ClashCreative.Models
                 p.TeamId = GetSetTeamId(p);
                 playersToAdd.Add(p);
                 List<Battle> playerBattles = await cJson.GetListOfBattles(p.Tag);
-                battlesToAdd.AddRange(playerBattles);
+                int f = await SaveBattles(p.Tag, playerBattles);
             }
 
             Console.WriteLine();
 
 
             clan.UpdateTime = now;
-            await context.Clans.AddAsync(clan);
-            await context.Players.AddRangeAsync(playersToAdd);
-            int f = await SaveBattles(battlesToAdd);
+            context.Clans.Add(clan);
+            context.Players.AddRange(playersToAdd);
 
-            //context.SaveChanges();
+            context.SaveChanges();
             return true;
         }
 
-        //returns number of saved battles
-        public async Task<int> SaveBattles(List<Battle> battles)
-        {
-            int linesSaved = 0;
-            //The last battle saved in the DB
-            //Note:need to apply a where so it aligns per user
-            var lastSavedBattle = context.Battles.OrderByDescending(b => b.BattleTime).FirstOrDefault();
+        //public async Task<bool> SaveBattle(string playerId)
+        //{
 
-            //if there are items in the db it'll remove up until the most recent game 
-            if (lastSavedBattle != null)
+        //}
+
+        //returns number of saved battles
+        public async Task<int> SaveBattles(string playerTag, List<Battle> battles)
+        {
+            battles.OrderByDescending(b => b.BattleTime);
+            int linesSaved = 0;
+
+            var playerTeams =  context.Team.Where(t => t.Tag == playerTag || t.Tag2 == playerTag).ToList();
+            for(int t = 0; t < playerTeams.Count; t++)
             {
-                for(int i   = 0; i < battles.Count; i++)
+                var lastBattle = context.Battles.Where(b => b.Team1Id == playerTeams[t].TeamId || b.Team2Id == playerTeams[t].TeamId).FirstOrDefault();
+
+                if(lastBattle != null)
+                { 
+                for(int b = 0; b < battles.Count;b++)
                 {
-                    if(lastSavedBattle.BattleTime == battles[i].BattleTime)
+                    if(battles[b].BattleTime == lastBattle.BattleTime)
                     {
-                        //this is the item before the items you want
-                        battles.RemoveRange(0, i+1);
+                        battles.RemoveRange(0, b+1);
+                        b = battles.Count();
                     }
                 }
+                }
             }
+            //var lastPlayerBattle = context.Battles.Where(b => b.Team1Id == playerTeamId.TeamId || b.Team2Id == playerTeamId.TeamId)
+            //    .OrderByDescending(b => b.BattleTime).FirstOrDefault();
+
+            ////if there are items in the db it'll remove up until the most recent game 
+            //if (lastPlayerBattle != null)
+            //{
+            //    for(int i   = 0; i < battles.Count; i++)
+            //    {
+            //        if(lastPlayerBattle.BattleTime == battles[i].BattleTime)
+            //        {
+            //            //this is the item before the items you want
+            //            battles.RemoveRange(0, i+1);
+            //        }
+            //    }
+            //}
 
           battles.ForEach( b =>
             {
@@ -165,7 +187,6 @@ namespace ClashCreative.Models
             });
             Console.WriteLine();
 
-            await context.SaveChangesAsync();
             return linesSaved;
         }
 
