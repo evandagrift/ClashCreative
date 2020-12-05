@@ -78,12 +78,12 @@ namespace ClashCreative.Models
             int linesSaved = 0;
             //The last battle saved in the DB
             //Note:need to apply a where so it aligns per user
-            var lastSavedBattle = context.Battles.OrderByDescending(b => b.BattleId).FirstOrDefault();
+            var lastSavedBattle = context.Battles.OrderByDescending(b => b.BattleTime).FirstOrDefault();
 
             //if there are items in the db it'll remove up until the most recent game 
             if (lastSavedBattle != null)
             {
-                for(int i = 0; i < battles.Count; i++)
+                for(int i   = 0; i < battles.Count; i++)
                 {
                     if(lastSavedBattle.BattleTime == battles[i].BattleTime)
                     {
@@ -156,7 +156,6 @@ namespace ClashCreative.Models
                 b.GameModeId = b.GameMode.Id;
 
                     context.Battles.Add(b);
-                    context.SaveChanges();
                     linesSaved++;
                 //var team = b.Team;
                 //var opponent = b.Opponent;
@@ -166,7 +165,7 @@ namespace ClashCreative.Models
             });
             Console.WriteLine();
 
-
+            await context.SaveChangesAsync();
             return linesSaved;
         }
 

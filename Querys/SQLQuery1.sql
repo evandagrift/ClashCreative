@@ -1,0 +1,1 @@
+﻿select * from Battles where Team1Name = 'Zephyr' or Team1Name = 'Elodin' order by BattleTime desc;
