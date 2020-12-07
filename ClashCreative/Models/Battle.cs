@@ -10,10 +10,13 @@ namespace ClashCreative.Models
     public class Battle
     {
         [Key]
-        public int BattleId { get;set; }
+        public int BattleId { get; set; }
+
         public string BattleTime { get; set; }
+
         //if 2v2 name will be name + " " + name2
         public string Team1Name { get; set; }
+
         public int Team1Id { get; set; }
         public bool Team1Win { get; set; }
 
@@ -22,9 +25,8 @@ namespace ClashCreative.Models
         public int Team1TrophyChange { get; set; }
 
         //FK to the Deck Id
-        public int Team1DeckA { get; set; }
-        public int Team1DeckB { get; set; }
-
+        public int Team1DeckAId { get; set; }
+        public int Team1DeckBId { get; set; }
         public int Team1Crowns { get; set; }
 
         //-1 will flag full health, 0 is dead
@@ -43,8 +45,10 @@ namespace ClashCreative.Models
         public int Team2TrophyChange { get; set; }
 
         //FK to the Deck Id
-        public int Team2DeckA { get; set; }
-        public int Team2DeckB { get; set; }
+        public int Team2DeckAId { get; set; }
+
+        public int Team2DeckBId { get; set; }
+
 
         public int Team2Crowns { get; set; }
 

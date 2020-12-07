@@ -13,10 +13,14 @@ namespace ClashCreative.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get;set; }
         public string Name { get; set; }
-        public string Url { get { return IconUrls["medium"]; } set { } }
-
+        public string Url { get; set; }
 
         [NotMapped]
         public IDictionary<string, string> IconUrls { get; set; }
+        
+        public void SetUrl()
+        {
+            Url = IconUrls["medium"];
+        }
     }
 }

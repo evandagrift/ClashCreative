@@ -1,0 +1,40 @@
+﻿@model PlayerDataModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@if (Model != null)
+{
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-4">
+                <p>Name:@Model.Player.Name</p>
+                <p>Tag:@Model.Player.Tag</p>
+
+                <p>Clan:@Model.Player.Clan.Name</p>
+                <p>Clan Tag:@Model.Player.ClanTag</p>
+            </div>
+            <div class="col-4">
+                <p>Level:@Model.Player.ExpLevel</p>
+                <p>Star Points:@Model.Player.StarPoints</p>
+                <p>Favorite Card:@Model.Player.CurrentFavouriteCard.Name</p>
+            </div>
+
+
+            <div class="col-4">
+                <p>Current Donations:@Model.Player.Donations</p>
+                <p>Current Donations Recieved:@Model.Player.DonationsReceived</p>
+                <p>Total Donations:@Model.Player.TotalDonations</p>
+                <p>Total Donations Recieved:@Model.Player.ClanCardsCollected</p>
+
+            </div>
+            <div class="row m-3"><p>Current Tropies:@Model.Player.Trophies Highest Trophies:@Model.Player.BestTrophies Wins:@Model.Player.Wins Losses:@Model.Player.Losses  
+                Cards Discovered @Model.Player.CardsDiscovered/101</p></div>
+        </div>
+        <div class="row">
+            @Html.Raw(Model.Deck.ToString());
+        </div>
+    </div>
+}

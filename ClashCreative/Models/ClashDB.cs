@@ -12,116 +12,44 @@ namespace ClashCreative.Models
     public class ClashDB
     {
         private ClashContext context;
-
         public ClashDB(ClashContext c)
         {
             context = c;
             //Player p = await GetPlayerData("#29PGJURQL");
         }
 
+        #region Completed
 
-        //public async Task Update()
-        //{
-        //    Console.WriteLine();
-        //}
-
-
-
-        public async Task<bool> AddClanMembersDataToDB(string clanTag, ClashJson cJson)
-        {
-            DateTime now = DateTime.Now;
-            var clan = await cJson.GetClanData(clanTag);
-            List<Player> playersToAdd = new List<Player>();
-            List<Battle> battlesToAdd = new List<Battle>();
-            for (int i = 0; i < clan.Members; i++)
-            {
-                var p = await cJson.GetPlayerData(clan.MemberList[i].Tag);
-                Deck d = new Deck(p.CurrentDeck);
-
-
-                p.LastSeen = clan.MemberList[i].LastSeen; p.UpdateTime = now;
-
-                Console.WriteLine();
-
-                //create function to Get/Set Deck ID
-                //function will return DeckId If the deck doesn't exist it adds it and saves it and returns the created ID
-
-                var deckId = GetSetDeckID(d);
-                p.CurrentDeckId = deckId;
-
-
-                if (p.CurrentDeckId == -1)
-                {
-                    Console.WriteLine();
-                }
-                p.TeamId = GetSetTeamId(p);
-                playersToAdd.Add(p);
-                List<Battle> playerBattles = await cJson.GetListOfBattles(p.Tag);
-                int f = await SaveBattles(p.Tag, playerBattles);
-            }
-
-            Console.WriteLine();
-
-
-            clan.UpdateTime = now;
-            context.Clans.Add(clan);
-            context.Players.AddRange(playersToAdd);
-
-            context.SaveChanges();
-            return true;
-        }
-
-        //public async Task<bool> SaveBattle(string playerId)
-        //{
-
-        //}
-
-        //returns number of saved battles
-        public async Task<int> SaveBattles(string playerTag, List<Battle> battles)
+        public async Task<int> SaveBattles(List<Battle> battles)
         {
             battles.OrderByDescending(b => b.BattleTime);
             int linesSaved = 0;
 
-            var playerTeams =  context.Team.Where(t => t.Tag == playerTag || t.Tag2 == playerTag).ToList();
-            for(int t = 0; t < playerTeams.Count; t++)
-            {
-                var lastBattle = context.Battles.Where(b => b.Team1Id == playerTeams[t].TeamId || b.Team2Id == playerTeams[t].TeamId).FirstOrDefault();
 
-                if(lastBattle != null)
-                { 
-                for(int b = 0; b < battles.Count;b++)
+            List<Battle> battlesToSave = new List<Battle>();
+
+            battles.ForEach((b) =>
+            {
+                b.Team1Id = GetSetTeamId(b.Team);
+                b.Team2Id = GetSetTeamId(b.Opponent);
+
+                var playerBattles = context.Battles.Where(t => t.Team1Id == b.Team1Id && t.BattleTime == b.BattleTime || t.Team2Id == b.Team1Id && t.BattleTime == b.BattleTime).FirstOrDefault();
+
+                if (playerBattles == null)
                 {
-                    if(battles[b].BattleTime == lastBattle.BattleTime)
-                    {
-                        battles.RemoveRange(0, b+1);
-                        b = battles.Count();
-                    }
+                    battlesToSave.Add(b);
                 }
-                }
-            }
-            //var lastPlayerBattle = context.Battles.Where(b => b.Team1Id == playerTeamId.TeamId || b.Team2Id == playerTeamId.TeamId)
-            //    .OrderByDescending(b => b.BattleTime).FirstOrDefault();
+            });
 
-            ////if there are items in the db it'll remove up until the most recent game 
-            //if (lastPlayerBattle != null)
-            //{
-            //    for(int i   = 0; i < battles.Count; i++)
-            //    {
-            //        if(lastPlayerBattle.BattleTime == battles[i].BattleTime)
-            //        {
-            //            //this is the item before the items you want
-            //            battles.RemoveRange(0, i+1);
-            //        }
-            //    }
-            //}
 
-          battles.ForEach( b =>
+            battlesToSave.ForEach(b =>
             {
+
+
                 //plop in all those variables
                 b.Team1Name = b.Team[0].Name;
                 if (b.Team.Count > 1) { b.Team1Name += " " + b.Team[1].Name; }
 
-                b.Team1Id = GetSetTeamId(b.Team);
 
                 if (b.Team[0].Crowns > b.Opponent[0].Crowns)
                 { b.Team1Win = true; }
@@ -131,12 +59,12 @@ namespace ClashCreative.Models
                 b.Team1TrophyChange = b.Team[0].TrophyChange;
 
                 Deck d = new Deck(b.Team[0].Cards);
-                b.Team1DeckA = GetSetDeckID(d);
+                b.Team1DeckAId = GetSetDeckID(d);
 
                 if (b.Team.Count > 1)
                 {
                     d = new Deck(b.Team[1].Cards);
-                    b.Team1DeckB = GetSetDeckID(d);
+                    b.Team1DeckBId = GetSetDeckID(d);
                 }
 
                 b.Team1Crowns = b.Team[0].Crowns;
@@ -150,7 +78,6 @@ namespace ClashCreative.Models
                 b.Team2Name = b.Opponent[0].Name;
                 if (b.Opponent.Count > 1) { b.Team2Name += " " + b.Opponent[1].Name; }
 
-                b.Team2Id = GetSetTeamId(b.Opponent);
 
                 if (b.Opponent[0].Crowns > b.Team[0].Crowns)
                 { b.Team2Win = true; }
@@ -160,12 +87,12 @@ namespace ClashCreative.Models
                 b.Team2TrophyChange = b.Opponent[0].TrophyChange;
 
                 d = new Deck(b.Opponent[0].Cards);
-                b.Team2DeckA = GetSetDeckID(d);
+                b.Team2DeckAId = GetSetDeckID(d);
 
                 if (b.Opponent.Count > 1)
                 {
                     d = new Deck(b.Opponent[1].Cards);
-                    b.Team2DeckB = GetSetDeckID(d);
+                    b.Team2DeckBId = GetSetDeckID(d);
                 }
 
                 b.Team2Crowns = b.Opponent[0].Crowns;
@@ -177,8 +104,8 @@ namespace ClashCreative.Models
 
                 b.GameModeId = b.GameMode.Id;
 
-                    context.Battles.Add(b);
-                    linesSaved++;
+                context.Battles.Add(b);
+                linesSaved++;
                 //var team = b.Team;
                 //var opponent = b.Opponent;
 
@@ -191,9 +118,21 @@ namespace ClashCreative.Models
         }
 
 
-        #region Completed
+        public async Task<Player> FillPlayerDBData(Player player)
+        {
+            DateTime now = DateTime.Now;
 
-        //any unique team of players, a, b, a+b... is saved and given a team Id by the database
+            player.TeamId = GetSetTeamId(player);
+
+            Deck d = new Deck(player.CurrentDeck);
+            player.CurrentDeckId = GetSetDeckID(d);
+            player.UpdateTime = now;
+            return player;
+        }
+
+
+
+       // any unique team of players, a, b, a+b... is saved and given a team Id by the database
         public int GetSetTeamId(Player player)
         {
             List<TeamMember> t = new List<TeamMember>();
@@ -203,7 +142,7 @@ namespace ClashCreative.Models
             t.Add(p);
             return GetSetTeamId(t);
         }
-            public int GetSetTeamId(List<TeamMember> teamMembers)
+        public int GetSetTeamId(List<TeamMember> teamMembers)
         {
             //return variable, if it remains at -1 flags if statement to create new team Id
             int teamId = -1;
@@ -215,50 +154,58 @@ namespace ClashCreative.Models
             if (teamMembers.Count == 2) twoVtwo = true;
 
             //searches db for all teams and focuses that search based on wether on not it's 2v2
-            var teams = context.Team.Where(t => t.TwoVTwo == twoVtwo).ToList();
-
+            var teams = context.Team.Where(t => t.TwoVTwo == twoVtwo);
+            Team myTeam = new Team();
             //if it's
             if (!twoVtwo)
             {
-                teams.ForEach(a =>
-                {
-                    if (a.Tag == teamMembers[0].Tag)
-                    {
-                        teamId = a.TeamId;
-                    }
-                });
+                myTeam = teams.Where(t => t.Tag == teamMembers[0].Tag || t.Tag2 == teamMembers[0].Tag).FirstOrDefault(); 
+                if(myTeam != null) { teamId = myTeam.TeamId; }
             }
             else
             {
-                teams.ForEach(a =>
-                {
-                    if (a.Tag == teamMembers[0].Tag && a.Tag2 == teamMembers[1].Tag ||
-                    a.Tag == teamMembers[1].Tag && a.Tag2 == teamMembers[0].Tag)
-                    {
-                        teamId = a.TeamId;
+                myTeam = teams.Where(t => ((t.Tag == teamMembers[0].Tag && t.Tag2 == teamMembers[1].Tag) || (t.Tag == teamMembers[1].Tag && t.Tag2 == teamMembers[0].Tag))).FirstOrDefault();
+
+
+                if (myTeam != null) 
+                { teamId = myTeam.TeamId;
+                if(myTeam.Tag == "#9V88U2CG2"|| myTeam.Tag == "#29PGJURQL")
+                        {
+                        Console.WriteLine();
                     }
-                });
+                }
             }
 
             if (teamId == -1)
+            { Console.WriteLine(); }
+
+            if (teamId == -1)
             {
-                Team teamToAdd = new Team();
-                teamToAdd.Tag = teamMembers[0].Tag;
-                teamToAdd.Name = teamMembers[0].Name;
-                teamToAdd.TeamName = teamMembers[0].Name;
+                myTeam = new Team();
+                myTeam.Tag = teamMembers[0].Tag;
+                myTeam.Name = teamMembers[0].Name;
+                myTeam.TeamName = teamMembers[0].Name;
 
                 if (twoVtwo)
                 {
-                    teamToAdd.TwoVTwo = true;
-                    teamToAdd.Tag2 = teamMembers[1].Tag;
-                    teamToAdd.Name2 = teamMembers[1].Name;
-                    teamToAdd.TeamName += " " + teamMembers[1].Name;
+                    myTeam.TwoVTwo = true;
+                    myTeam.Tag2 = teamMembers[1].Tag;
+                    myTeam.Name2 = teamMembers[1].Name;
+                    myTeam.TeamName += " " + teamMembers[1].Name;
                 }
-                context.Team.Add(teamToAdd);
-                context.SaveChanges();
 
                 //sets return Id to the newly set Id within the Team model
-                teamId = teamToAdd.TeamId;
+                if (myTeam == null)
+                {
+                    teamId = 1;
+                }
+                else { teamId = context.Team.Count() + 1; }
+
+
+
+                myTeam.TeamId = teamId;
+                context.Team.Add(myTeam);
+                context.SaveChanges();
             }
             return teamId;
         }

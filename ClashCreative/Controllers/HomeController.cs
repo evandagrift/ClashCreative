@@ -38,30 +38,41 @@ namespace ClashCreative.Controllers
 
 
 
+
         public async Task<IActionResult> Index()
         {
             // var player = await GetPlayerData("#29PGJURQL");
             //var clan = await GetClanData(player.ClanTag);
             ClashJson clashJson = new ClashJson(_clientFactory);
             ClashDB clashDB = new ClashDB(context);
+
+
+            if (context.Cards.Count() < 1)
+            {
+                clashJson = new ClashJson(_clientFactory);
+                List<Card> cards = await clashJson.GetAllCards();
+                cards.ForEach(c => { c.SetUrl(); });
+                await context.Cards.AddRangeAsync(cards);
+                context.SaveChanges();
+            }
+
             //battles.ForEach(b =>
             //{
             //    var team = b.Team;
             //    var opponent = b.Opponent;
 
             //    clashDB.GetSetTeamId(team);
-            //    clashDB.GetSetTeamId(opponent);   
-
-            //});
-            //
-          await clashDB.AddClanMembersDataToDB("#8CYPL8R",clashJson);
+            //    clashDB.GetSetTeamId(opponent); 
             //List<Battle> battles = await clashJson.GetListOfBattles("#9V88U2CG2");
             //await clashDB.SaveBattles("#9V88U2CG2", battles);
-             return View();
+            return View();
         }
+
+
+
+
     }
 }
-
 //string myPlayerTag = "#29PGJURQL";
 //string myClanTag = "#8CYPL8R";
 //string sorenClanTag = "#L2JUGRVR";

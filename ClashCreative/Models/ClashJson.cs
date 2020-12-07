@@ -18,9 +18,11 @@ namespace ClashCreative.Models
         }
 
         //returns the Player Object from deserielized JSON
-        public async Task<Player> GetPlayerData(string playerID)
+        //returns player with all json items retrieved
+        //current deck ID and Team ID will need to be added in DB Class
+        public async Task<Player> GetPlayerData(string playerTag)
         {
-            string connectionString = "/v1/players/%23" + playerID.Substring(1);
+            string connectionString = "/v1/players/%23" + playerTag.Substring(1);
             var client = _clientFactory.CreateClient("API Client");
             var result = await client.GetAsync(connectionString);
             Console.WriteLine();
@@ -29,6 +31,10 @@ namespace ClashCreative.Models
             {
                 var content = await result.Content.ReadAsStringAsync();
                 var player = JsonConvert.DeserializeObject<Player>(content);
+                var clan = await GetClanData(player.Clan.Tag);
+                player.LastSeen = clan.MemberList.Where(c => c.Tag == player.Tag).FirstOrDefault().LastSeen;
+                player.CardsDiscovered = player.Cards.Count();
+                player.CurrentFavouriteCardId = player.CurrentFavouriteCard.Id;
                 player.ClanTag = player.Clan.Tag;
                 return player;
             }
@@ -55,9 +61,9 @@ namespace ClashCreative.Models
 
 
         //returns Clan Object from deserielized JSON
-        public async Task<Clan> GetClanData(string clanID)
+        public async Task<Clan> GetClanData(string clanTag)
         {
-            string connectionString = "/v1/clans/%23" + clanID.Substring(1);
+            string connectionString = "/v1/clans/%23" + clanTag.Substring(1);
             var client = _clientFactory.CreateClient("API Client");
 
             var result = await client.GetAsync(connectionString);
@@ -65,10 +71,27 @@ namespace ClashCreative.Models
             if (result.IsSuccessStatusCode)
             {
                 var content = await result.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<Clan>(content);
+                var clan = JsonConvert.DeserializeObject<Clan>(content);
+                clan.LocationCode = clan.Location["countryCode"];
+                return clan;
             }
             return null;
         }
+        //public async Task<List<Player>> GetClanMembers(string clanTag)
+        //{
+        //    List<Player> players = new List<Player>();
+        //    Player p;
+        //    Clan clan = await GetClanData(clanTag);
+        //    clan.MemberList.ForEach(m => {
+
+
+        //});
+        //   //p.LastSeen = clan.MemberList[i].LastSeen; p.UpdateTime = now;
+
+        //    return players;
+        //}
+
+
 
         //gets battle data from JSON/api
         public async Task<List<Battle>> GetListOfBattles(string playerID)

@@ -1,0 +1,22 @@
+﻿@model UpdateModel
+@{
+    ViewData["Title"] = "Updating";
+}
+<head>
+</head>
+
+<div class="text-center">
+    <p><h1 class="display-4">Welcome, your database is being updated</h1></p>
+    @if (Model != null)
+    {
+        if (Model.UpdateComplete == true)
+        {<p><h2>Update Complete</h2></p>}
+    }
+    else
+    {
+        <form name="form" method="post"></form>
+        <script type="text/javascript">
+            document.form.submit();
+        </script>
+    }
+</div>

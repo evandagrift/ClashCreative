@@ -73,6 +73,7 @@ namespace ClashCreative
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,8 +14,16 @@ namespace ClashCreative.Models
         public string Tag { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
+        public string Description { get; set; }
+        public int BadgeId { get; set; }
+        public string LocationCode { get; set; }
+        [NotMapped]
+        public IDictionary<string, string> Location { get; set; }
         public int RequiredTrophies { get; set; }
         public int DonationsPerWeek { get; set; }
+        public string ClanChestStatus { get; set; }
+        public int ClanChestLevel { get; set; }
+
         public int Members { get; set; }
 
         [NotMapped]

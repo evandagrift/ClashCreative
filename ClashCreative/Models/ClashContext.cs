@@ -15,7 +15,8 @@ namespace ClashCreative.Models
         public DbSet<Deck> Decks { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<Battle> Battles { get; set; }
-        public DbSet<GameMode> GameModes { get; set; }
         public DbSet<Team> Team { get; set; }
+
+
     }
 }

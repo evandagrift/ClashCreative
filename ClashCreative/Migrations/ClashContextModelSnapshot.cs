@@ -38,10 +38,10 @@ namespace ClashCreative.Migrations
                     b.Property<int>("Team1Crowns")
                         .HasColumnType("int");
 
-                    b.Property<int>("Team1DeckA")
+                    b.Property<int>("Team1DeckAId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Team1DeckB")
+                    b.Property<int>("Team1DeckBId")
                         .HasColumnType("int");
 
                     b.Property<int>("Team1Id")
@@ -71,10 +71,10 @@ namespace ClashCreative.Migrations
                     b.Property<int>("Team2Crowns")
                         .HasColumnType("int");
 
-                    b.Property<int>("Team2DeckA")
+                    b.Property<int>("Team2DeckAId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Team2DeckB")
+                    b.Property<int>("Team2DeckBId")
                         .HasColumnType("int");
 
                     b.Property<int>("Team2Id")
@@ -131,8 +131,23 @@ namespace ClashCreative.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("BadgeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClanChestLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClanChestStatus")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<int>("DonationsPerWeek")
                         .HasColumnType("int");
+
+                    b.Property<string>("LocationCode")
+                        .HasColumnType("text");
 
                     b.Property<int>("Members")
                         .HasColumnType("int");
@@ -191,19 +206,6 @@ namespace ClashCreative.Migrations
                     b.ToTable("Decks");
                 });
 
-            modelBuilder.Entity("ClashCreative.Models.GameMode", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GameModes");
-                });
-
             modelBuilder.Entity("ClashCreative.Models.Player", b =>
                 {
                     b.Property<int>("Id")
@@ -213,6 +215,9 @@ namespace ClashCreative.Migrations
                     b.Property<int>("BestTrophies")
                         .HasColumnType("int");
 
+                    b.Property<int>("CardsDiscovered")
+                        .HasColumnType("int");
+
                     b.Property<int>("ClanCardsCollected")
                         .HasColumnType("int");
 
@@ -220,6 +225,9 @@ namespace ClashCreative.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("CurrentDeckId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CurrentFavouriteCardId")
                         .HasColumnType("int");
 
                     b.Property<int>("Donations")
@@ -242,6 +250,9 @@ namespace ClashCreative.Migrations
 
                     b.Property<string>("Role")
                         .HasColumnType("text");
+
+                    b.Property<int>("StarPoints")
+                        .HasColumnType("int");
 
                     b.Property<string>("Tag")
                         .HasColumnType("text");

@@ -1,10 +1,21 @@
-﻿@{
+﻿@model Player
+@{
     ViewData["Title"] = "Home Page";
 }
 <head>
 </head>
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    "#29PGJURQL"
+    <form method="post">
+
+
+        <div class="form-group">
+            <label>Player Tag:<input class="form-control" asp-for="Tag" size="100%" placeholder="#~~~~~~" /></label>
+            <button class="btn-primary float-left" asp-controller="Players" asp-action="PlayerData" type="submit" onclick="">Get Player Data</button>
+
+            <a class="nav-link text-light" asp-area="" asp-controller="Players" asp-action="Index">Players</a>
+        </div>
+
+    </form>
 </div>

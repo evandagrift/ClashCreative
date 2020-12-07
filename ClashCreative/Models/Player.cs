@@ -18,6 +18,14 @@ namespace ClashCreative.Models
         public string Name { get; set; }
 
         public string ClanTag { get; set; }
+        public int CurrentFavouriteCardId { get; set; }
+        [NotMapped]
+        public Card CurrentFavouriteCard { get; set; }
+
+        public int CurrentDeckId { get; set; }
+
+        [NotMapped]
+        public List<Card> CurrentDeck { get; set; }
 
         [NotMapped]
         public Clan Clan { get; set; }
@@ -25,15 +33,11 @@ namespace ClashCreative.Models
         public string Role { get; set; }
         public string LastSeen { get; set; }
 
-        //change this to Current Deck Id
-        public int CurrentDeckId { get ; set; }
-
-        [NotMapped]
-        public List<Card> CurrentDeck { get; set; }
 
         public int ExpLevel { get; set; }
         public int Trophies { get; set; }
         public int BestTrophies { get; set; }
+        public int StarPoints { get; set; }
 
         public int Wins { get; set; }
         public int Losses { get; set; }
@@ -41,6 +45,9 @@ namespace ClashCreative.Models
         public int Donations { get; set; }
         public int DonationsReceived { get; set; }
         public int TotalDonations { get; set; }
+        public int CardsDiscovered { get; set; }
+        [NotMapped]
+        public List<Card> Cards { get; set; }
         public int ClanCardsCollected { get; set; }
         public DateTime UpdateTime { get; set; }
 
