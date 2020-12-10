@@ -1,10 +1,17 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+.homeform{
+    position:relative;
+    top:-350px;
+    left:35%;
+    width:50%;
+}
+
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
@@ -50,6 +57,9 @@ button.accept-policy {
   font-size: 1rem;
   line-height: inherit;
 }
+
+
+
 
 /* Sticky footer styles
 -------------------------------------------------- */

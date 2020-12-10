@@ -4,17 +4,23 @@
 }
 <head>
 </head>
+<div class="container" style="background-color:whitesmoke">
 
-<div class="text-center">
-    @foreach (Card card in Model)
-    {
-        <div class="card-deck d-inline-block">
-            <a href="https://clashroyale.fandom.com/wiki/@card.Name">
-                <img class="card-img-top" src="@card.Url" width="64px;" />
-            </a>
-            <a href="https://clashroyale.fandom.com/wiki/@card.Name">
-                <h5 class="card-text">@card.Name</h5>
-            </a>
-        </div>
-    }
+    <h1 class="text-center">
+        All Cards in Clash Royale
+    </h1>
+    <div class="text-center">
+        @foreach (Card card in Model)
+        {
+            <div class="card-deck d-inline-block">
+                <a href="https://clashroyale.fandom.com/wiki/@card.Name">
+                    <img class="card-img-top" src="@card.Url" width="64px;" />
+                </a>
+                <a href="https://clashroyale.fandom.com/wiki/@card.Name">
+                    <h5 class="card-text">@card.Name</h5>
+                </a>
+            </div>
+        }
     </div>
+
+</div>

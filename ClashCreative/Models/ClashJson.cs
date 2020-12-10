@@ -22,6 +22,8 @@ namespace ClashCreative.Models
         //current deck ID and Team ID will need to be added in DB Class
         public async Task<Player> GetPlayerData(string playerTag)
         {
+
+            //Note: Makesure faulty data doesn't make it through
             string connectionString = "/v1/players/%23" + playerTag.Substring(1);
             var client = _clientFactory.CreateClient("API Client");
             var result = await client.GetAsync(connectionString);

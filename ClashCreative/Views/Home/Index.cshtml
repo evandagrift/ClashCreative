@@ -1,21 +1,70 @@
-﻿@model Player
+﻿@model HomePageModel
 @{
     ViewData["Title"] = "Home Page";
 }
-<head>
-</head>
 
 <div class="text-center">
-    "#29PGJURQL"
-    <form method="post">
+    <img class="" src="~/bin/imgs/maxresdefault.jpg" />
+    <div class="homeform">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="form-group">
+                <ul class="nav nav-tabs">
 
+                    <li class="nav-item">
+                        <button id="$playerButton" class="nav-link active" type="submit" onclick="">Player</button>
+                    </li>
 
-        <div class="form-group">
-            <label>Player Tag:<input class="form-control" asp-for="Tag" size="100%" placeholder="#~~~~~~" /></label>
-            <button class="btn-primary float-left" asp-controller="Players" asp-action="PlayerData" type="submit" onclick="">Get Player Data</button>
+                    <li class="nav-item">
+                        <button id="$clanButton" class="nav-link" type="button" onclick="setClanActive()">Clan</button>
+                    </li>
+                </ul>
+                <form id="$playerForm" class="" method="post" style="hidden">
 
-            <a class="nav-link text-light" asp-area="" asp-controller="Players" asp-action="Index">Players</a>
+                    <input id="$playerInput" class="form-control" asp-for="Player.Tag" placeholder="#~~~~~" />
+                    <input id="$clanInput" class="form-control" type="hidden" asp-for="Clan.Tag" placeholder="#~~~~~" />
+                    <button id="$submitButton" class="btn-primary float-left" asp-controller="Players" asp-action="Index" type="submit">Get Player Data</button>
+                </form>
+            </div>
         </div>
-
-    </form>
+        <div class="col-2"></div>
+    </div>
 </div>
+
+<script>
+    var playerButton = document.getElementById("$playerButton");
+    var clanButton = document.getElementById("$clanButton");
+
+    var playerForm = document.getElementById("$playerForm");
+    var playerInput = document.getElementById("$playerInput");
+    var clanForm = document.getElementById("$clanForm");
+    var clanInput = document.getElementById("$clanInput");
+    var submitButton = document.getElementById("$submitButton");
+
+    playerButton.onclick = this.setPlayerActive.bind(this);
+    clanButton.onclick = this.setClanActive.bind(this);
+
+    function setPlayerActive() {
+        playerButton.classList.add('active');
+        clanButton.classList.remove('active');
+        submitButton.innerText = "Get Player Data";
+        playerInput.type = "";
+        clanInput.type = "hidden";
+
+        clanButton.onclick = setClanActive.bind(this);
+        playerButton.onclick = "";
+    }
+    function setClanActive() {
+        clanButton.classList.add('active');
+        playerButton.classList.remove('active');
+        submitButton.innerText = "Get Clan Data";
+
+        playerInput.type = "hidden";
+        clanInput.type = "";
+
+
+        playerButton.onclick = setPlayerActive.bind(this);
+
+        clanButton.onclick = "";
+    }
+</script>

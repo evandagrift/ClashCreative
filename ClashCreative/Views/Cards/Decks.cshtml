@@ -7,10 +7,25 @@
 }
 
 
-<div class="container">
 
-    @foreach (Deck deck in Model)
-    {
-        @Html.Raw(deck.ToString());
-    }
+<div class="container" style="background-color:whitesmoke">
+    <div class="text-center">
+        <h1>Top 10 Logged Decks</h1>
+        @foreach (Deck deck in Model)
+        {
+            <div class="card m-3">
+                <div class="container-fluid d-inline-flex">
+                    <div class="col-6">
+                        @Html.Raw(deck.ToString())
+                    </div>
+                    <div class="col-6">
+                        <p>Deck Id:@deck.DeckId</p>
+                        <p>Win:@deck.Wins</p>
+                        <p>Loss:@deck.Loss</p>
+                        <p>Win loss ratio:@deck.WinLossRate</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

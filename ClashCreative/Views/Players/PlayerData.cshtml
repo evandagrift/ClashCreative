@@ -5,9 +5,8 @@
 @{
 }
 
-@if (Model != null)
+@if (Model != null & Model.Player != null || Model.Deck !=null)
 {
-    <div class="jumbotron">
         <div class="row">
             <div class="col-4">
                 <p>Name:@Model.Player.Name</p>
@@ -31,10 +30,9 @@
 
             </div>
             <div class="row m-3"><p>Current Tropies:@Model.Player.Trophies Highest Trophies:@Model.Player.BestTrophies Wins:@Model.Player.Wins Losses:@Model.Player.Losses  
-                Cards Discovered @Model.Player.CardsDiscovered/101</p></div>
+                Cards Discovered @Model.Player.CardsDiscovered/@Model.CardsInGame</p></div>
         </div>
-        <div class="row">
+        <div class="row m-3">
             @Html.Raw(Model.Deck.ToString());
         </div>
-    </div>
 }

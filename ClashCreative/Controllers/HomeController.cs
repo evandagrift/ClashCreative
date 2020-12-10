@@ -41,31 +41,40 @@ namespace ClashCreative.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // var player = await GetPlayerData("#29PGJURQL");
-            //var clan = await GetClanData(player.ClanTag);
+            //Class that accesses Clash Royale Api
             ClashJson clashJson = new ClashJson(_clientFactory);
+
+            //Class for DB interacting functions
             ClashDB clashDB = new ClashDB(context);
 
-
+            //Note:Do this better at later date
+            //couldn't figure out how to seed if empty w/ out repos in a timely matter
             if (context.Cards.Count() < 1)
             {
+                //accesses json functions via IHttpClientFactory _clientFactory to make the API calls
                 clashJson = new ClashJson(_clientFactory);
+                
+                //Gets all cards in game from Clash API
                 List<Card> cards = await clashJson.GetAllCards();
+
+                //sets the img URL Strings foar all cards
+                //this is done because URL is called from API via IDictionary
                 cards.ForEach(c => { c.SetUrl(); });
+
+                //adds cards to context to be saved Async because there are many results
                 await context.Cards.AddRangeAsync(cards);
+
+
+                //saves cards to DB
                 context.SaveChanges();
             }
+            
+                //creates an instance of the model because the constructor holds crucial formatting variables
+                HomePageModel model = new HomePageModel();
 
-            //battles.ForEach(b =>
-            //{
-            //    var team = b.Team;
-            //    var opponent = b.Opponent;
 
-            //    clashDB.GetSetTeamId(team);
-            //    clashDB.GetSetTeamId(opponent); 
-            //List<Battle> battles = await clashJson.GetListOfBattles("#9V88U2CG2");
-            //await clashDB.SaveBattles("#9V88U2CG2", battles);
-            return View();
+
+            return View(model);
         }
 
 

@@ -9,5 +9,6 @@ namespace ClashCreative.Models
     {
         public Player Player { get; set; }
         public Deck Deck { get; set; }
+        public  int CardsInGame { get; set; }
     }
 }

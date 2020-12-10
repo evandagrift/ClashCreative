@@ -67,8 +67,12 @@ namespace ClashCreative.Models
         [NotMapped]
         public Card Card8 { get; set; }
 
-
-
+        [NotMapped]
+        public decimal Wins { get; set; }
+        [NotMapped]
+        public decimal Loss { get; set; }
+        [NotMapped]
+        public decimal WinLossRate { get; set; }
         public void SortCards()
         {
             List<int> sortedList = new List<int>();

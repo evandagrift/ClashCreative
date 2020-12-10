@@ -35,19 +35,52 @@ namespace ClashCreative.Controllers
             ClashJson clashJson = new ClashJson(_clientFactory);
             ClashDB clashDB = new ClashDB(context);
 
-            Deck d = new Deck();
-            d = context.Decks.FirstOrDefault();
-            d.Card1 = context.Cards.Find(d.Card1Id);
-            d.Card2 = context.Cards.Find(d.Card2Id);
-            d.Card3 = context.Cards.Find(d.Card3Id);
-            d.Card4 = context.Cards.Find(d.Card4Id);
-            d.Card5 = context.Cards.Find(d.Card5Id);
-            d.Card6 = context.Cards.Find(d.Card6Id);
-            d.Card7 = context.Cards.Find(d.Card7Id);
-            d.Card8 = context.Cards.Find(d.Card8Id);
-            List<Deck> decks = new List<Deck>();
-            decks.Add(d);
-            return View(decks);
+
+            var allDecks = context.Decks.ToList();
+            var allBattles = context.Battles.ToList();
+            List<Deck> notableDecks = new List<Deck>();
+
+            //for each deck
+            allDecks.ForEach(d =>
+            {
+
+                var deckBattles = allBattles.Where(a =>a.Type=="PvP").Where(a => (a.Team1DeckAId == d.DeckId || a.Team1DeckBId == d.DeckId)).ToList();
+                deckBattles.ForEach(b =>
+                {
+                        if (b.Team1Win) { d.Wins++; }
+                        else { d.Loss++; }
+                });
+
+            });
+
+
+            allDecks.ForEach(d =>
+            {
+                if (d.Wins > 0)
+                {
+                    if (d.Loss == 0)
+                    {
+                        d.WinLossRate = d.Wins / 1;
+                    }
+                    else { d.WinLossRate = d.Wins / d.Loss; }
+                    
+                }
+            });
+
+            notableDecks = allDecks.Where(d => d.Wins > 5).OrderByDescending(d => d.WinLossRate).ToList().GetRange(0,10);
+            notableDecks.ForEach(d =>
+            {
+                d.Card1 = context.Cards.Find(d.Card1Id);
+                d.Card2 = context.Cards.Find(d.Card2Id);
+                d.Card3 = context.Cards.Find(d.Card3Id);
+                d.Card4 = context.Cards.Find(d.Card4Id);
+                d.Card5 = context.Cards.Find(d.Card5Id);
+                d.Card6 = context.Cards.Find(d.Card6Id);
+                d.Card7 = context.Cards.Find(d.Card7Id);
+                d.Card8 = context.Cards.Find(d.Card8Id);
+            });
+            
+            return View(notableDecks);
         }
     }
 }

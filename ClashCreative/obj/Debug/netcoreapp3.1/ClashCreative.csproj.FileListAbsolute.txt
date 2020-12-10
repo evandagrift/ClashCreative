@@ -93,3 +93,5 @@ C:\Users\FreshZeph\source\repos\ClashCreative\ClashCreative\obj\Debug\netcoreapp
 C:\Users\FreshZeph\source\repos\ClashCreative\ClashCreative\obj\Debug\netcoreapp3.1\Razor\Views\Players\PlayerData.cshtml.g.cs
 C:\Users\FreshZeph\source\repos\ClashCreative\ClashCreative\obj\Debug\netcoreapp3.1\Razor\Views\Cards\Cards.cshtml.g.cs
 C:\Users\FreshZeph\source\repos\ClashCreative\ClashCreative\obj\Debug\netcoreapp3.1\Razor\Views\Cards\Decks.cshtml.g.cs
+C:\Users\FreshZeph\source\repos\ClashCreative\ClashCreative\obj\Debug\netcoreapp3.1\Razor\Views\Players\AllPlayers.cshtml.g.cs
+C:\Users\FreshZeph\source\repos\ClashCreative\ClashCreative\obj\Debug\netcoreapp3.1\Razor\Views\Players\Clans.cshtml.g.cs
