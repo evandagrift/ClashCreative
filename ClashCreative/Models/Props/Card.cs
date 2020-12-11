@@ -20,7 +20,10 @@ namespace ClashCreative.Models
         
         public void SetUrl()
         {
+            if (IconUrls != null) 
+            { 
             Url = IconUrls["medium"];
+            }
         }
     }
 }

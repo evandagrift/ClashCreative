@@ -10,7 +10,8 @@ namespace ClashCreative.Models
         //objects to fill and pass as Model to next view
         public Player Player { get; set; }
         public Clan Clan { get; set; }
-        public string Warning { get; set; }
+
+      
 
         ////empty string when not active, "active" when active
         ////these strings are appended to the html class so when not active it is empty string, if selected it == active

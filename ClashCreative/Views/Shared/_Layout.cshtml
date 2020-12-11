@@ -7,21 +7,21 @@
     <title>@ViewData["Title"] - ClashCreative</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="icon" type="image/x-icon" href="/bin/imgs/favicon.ico">
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark m-0 p-0">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow m-0 p-0" style="background-color:#212223">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/bin/imgs/download.jpg" height="50px" width="50px" /></a>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Track Royale</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/bin/imgs/download.png" height="50px" width="50px" /></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse float-right float-md-right ">
+                <div class="navbar-collapse float-right float-md-right">
                     <ul class="navbar-nav  flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Players" asp-action="Index">Players</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Players" asp-action="Players">Players</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Players" asp-action="Clans">Clans</a>
@@ -40,7 +40,7 @@
             </div>
         </nav>
     </header>
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3"style="background-color:#164573">
             @RenderBody()
         </main>
 

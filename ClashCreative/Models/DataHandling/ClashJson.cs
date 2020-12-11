@@ -23,28 +23,39 @@ namespace ClashCreative.Models
         public async Task<Player> GetPlayerData(string playerTag)
         {
 
-            //Note: Makesure faulty data doesn't make it through
-            string connectionString = "/v1/players/%23" + playerTag.Substring(1);
-            var client = _clientFactory.CreateClient("API Client");
-            var result = await client.GetAsync(connectionString);
-            Console.WriteLine();
-
-            if (result.IsSuccessStatusCode)
+            if (playerTag != null)
             {
-                var content = await result.Content.ReadAsStringAsync();
-                var player = JsonConvert.DeserializeObject<Player>(content);
-                var clan = await GetClanData(player.Clan.Tag);
-                player.LastSeen = clan.MemberList.Where(c => c.Tag == player.Tag).FirstOrDefault().LastSeen;
-                player.CardsDiscovered = player.Cards.Count();
-                player.CurrentFavouriteCardId = player.CurrentFavouriteCard.Id;
-                player.ClanTag = player.Clan.Tag;
-                return player;
+                try
+                {
+                    //Note: Makesure faulty data doesn't make it through
+                    string connectionString = "/v1/players/%23" + playerTag.Substring(1);
+                    var client = _clientFactory.CreateClient("API Client");
+                    var result = await client.GetAsync(connectionString);
+                    Console.WriteLine();
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var content = await result.Content.ReadAsStringAsync();
+                        var player = JsonConvert.DeserializeObject<Player>(content);
+                        if (player.ClanTag != null)
+                        {
+                            var clan = await GetClanData(player.ClanTag);
+                            player.Clan = clan;
+                            player.LastSeen = clan.MemberList.Where(c => c.Tag == player.Tag).FirstOrDefault().LastSeen ;
+                        }
+
+                        player.CardsDiscovered = player.Cards.Count();
+                        player.CurrentFavouriteCardId = player.CurrentFavouriteCard.Id;
+                        return player;
+                    }
+                }
+                catch { return null; }
             }
             return null;
         }
 
-        public async Task<List<Card>> GetAllCards() 
-        { 
+        public async Task<List<Card>> GetAllCards()
+        {
             string connectionString = "/v1/cards?";
 
             var client = _clientFactory.CreateClient("API Client");
@@ -65,17 +76,30 @@ namespace ClashCreative.Models
         //returns Clan Object from deserielized JSON
         public async Task<Clan> GetClanData(string clanTag)
         {
-            string connectionString = "/v1/clans/%23" + clanTag.Substring(1);
-            var client = _clientFactory.CreateClient("API Client");
-
-            var result = await client.GetAsync(connectionString);
-
-            if (result.IsSuccessStatusCode)
+            if (clanTag != null)
             {
-                var content = await result.Content.ReadAsStringAsync();
-                var clan = JsonConvert.DeserializeObject<Clan>(content);
-                clan.LocationCode = clan.Location["countryCode"];
-                return clan;
+                try
+                {
+                    string connectionString = "/v1/clans/%23" + clanTag.Substring(1);
+
+                    var client = _clientFactory.CreateClient("API Client");
+
+                    var result = await client.GetAsync(connectionString);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var content = await result.Content.ReadAsStringAsync();
+                        var clan = JsonConvert.DeserializeObject<Clan>(content);
+                        if (clan.Location.Count == 4)
+                        {
+                            clan.LocationCode = clan.Location["countryCode"];
+                        }
+                        else { Console.WriteLine(); }
+                        return clan;
+
+                    }
+                }
+                catch { return null; }
             }
             return null;
         }
@@ -108,7 +132,7 @@ namespace ClashCreative.Models
             {
                 var content = await result.Content.ReadAsStringAsync();
                 var battles = JsonConvert.DeserializeObject<List<Battle>>(content);
-               // battles.ForEach(b => { b.Opponent.})
+                // battles.ForEach(b => { b.Opponent.})
                 return battles;
             }
             return null;

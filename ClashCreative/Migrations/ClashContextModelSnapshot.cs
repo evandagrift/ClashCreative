@@ -140,6 +140,12 @@ namespace ClashCreative.Migrations
                     b.Property<string>("ClanChestStatus")
                         .HasColumnType("text");
 
+                    b.Property<int>("ClanScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClanWarTrophies")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 

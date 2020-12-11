@@ -76,6 +76,8 @@ namespace ClashCreative.Migrations
                     DonationsPerWeek = table.Column<int>(nullable: false),
                     ClanChestStatus = table.Column<string>(nullable: true),
                     ClanChestLevel = table.Column<int>(nullable: false),
+                    ClanScore = table.Column<int>(nullable: false),
+                    ClanWarTrophies = table.Column<int>(nullable: false),
                     Members = table.Column<int>(nullable: false),
                     UpdateTime = table.Column<DateTime>(nullable: false)
                 },

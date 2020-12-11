@@ -1,0 +1,50 @@
+﻿@model PlayersModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="container" style="background-color:#D4E6F1">
+
+    @if (Model.SearchedPlayer != null)
+    {
+        <div class="text-center">
+            @if (Model.SearchedPlayer.Tag != "invalid")
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h1>@Model.SearchedPlayer.Name : @Model.SearchedPlayer.Tag</h1>
+                    </div>
+                    <div class="card card-body">
+                        @Html.Raw(Model.SearchedPlayer.ToString())
+                    </div>
+                </div>
+            }
+            else
+            {<h1>*Not a valid Player Tag*</h1>}
+            <hr />
+        </div>
+    }
+
+    <div class="text-center">
+        <h2 class="mb-3">All Logged Players</h2>
+        <hr />
+        @foreach (Player player in Model.Players)
+        {
+            <a class="btn btn-outline-secondary text-dark mb-1" style="width:100%" data-toggle="collapse" href="@Model.SetHrefId(player.Tag)" role="button" aria-expanded="false">
+                <div class="container-fluid d-inline-flex">
+                    <div class="col-3"><b>Tag:</b>@player.Tag</div>
+                    <div class="col-6"><b>Name:</b>@player.Name</div>
+                    <div class="col-3"><b>Trophies</b>@player.Trophies</div>
+                </div>
+            </a>
+            <div class="collapse" id="@Model.GetHrefID(player.Tag)">
+                <div class="card card-body">
+                    @Html.Raw(player.ToString())
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+

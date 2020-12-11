@@ -21,9 +21,11 @@
                 </ul>
                 <form id="$playerForm" class="" method="post" style="hidden">
 
-                    <input id="$playerInput" class="form-control" asp-for="Player.Tag" placeholder="#~~~~~" />
-                    <input id="$clanInput" class="form-control" type="hidden" asp-for="Clan.Tag" placeholder="#~~~~~" />
-                    <button id="$submitButton" class="btn-primary float-left" asp-controller="Players" asp-action="Index" type="submit">Get Player Data</button>
+                    <input id="$playerInput" class="form-control" asp-for="Player.Tag" placeholder="Example:#29PGJURQL" />
+                    <button id="$playerSubmitButton" class="btn-primary float-left" asp-controller="Players" asp-action="Players" type="submit">Get Player Data</button>
+
+                    <input id="$clanInput" class="form-control" type="hidden" asp-for="Clan.Tag" placeholder="Example:#8CYPL8R" />
+                    <button id="$clanSubmitButton" style="display:none" class="btn-primary float-left" asp-controller="Players" asp-action="Clans" type="submit">Get Clan Data</button>
                 </form>
             </div>
         </div>
@@ -39,7 +41,8 @@
     var playerInput = document.getElementById("$playerInput");
     var clanForm = document.getElementById("$clanForm");
     var clanInput = document.getElementById("$clanInput");
-    var submitButton = document.getElementById("$submitButton");
+    var playerSubmitButton = document.getElementById("$playerSubmitButton");
+    var clanSubmitButton = document.getElementById("$clanSubmitButton");
 
     playerButton.onclick = this.setPlayerActive.bind(this);
     clanButton.onclick = this.setClanActive.bind(this);
@@ -47,9 +50,13 @@
     function setPlayerActive() {
         playerButton.classList.add('active');
         clanButton.classList.remove('active');
-        submitButton.innerText = "Get Player Data";
-        playerInput.type = "";
+
+
         clanInput.type = "hidden";
+        clanSubmitButton.style.display = "none";
+
+        playerInput.type = "";
+        playerSubmitButton.style.display = "";
 
         clanButton.onclick = setClanActive.bind(this);
         playerButton.onclick = "";
@@ -57,14 +64,15 @@
     function setClanActive() {
         clanButton.classList.add('active');
         playerButton.classList.remove('active');
-        submitButton.innerText = "Get Clan Data";
+
+
+        clanInput.type = "";
+        clanSubmitButton.style.display = "";
 
         playerInput.type = "hidden";
-        clanInput.type = "";
-
+        playerSubmitButton.style.display = "none";
 
         playerButton.onclick = setPlayerActive.bind(this);
-
         clanButton.onclick = "";
     }
 </script>

@@ -124,15 +124,30 @@ namespace ClashCreative.Models
 
             player.TeamId = GetSetTeamId(player);
 
-            Deck d = new Deck(player.CurrentDeck);
-            player.CurrentDeckId = GetSetDeckID(d);
+            player.Deck = context.Decks.Find(player.CurrentDeckId);
+
             player.UpdateTime = now;
+            if (player.CurrentFavouriteCard != null)
+            {
+                if (player.CurrentFavouriteCard.Url == null)
+                {
+                    player.CurrentFavouriteCard.SetUrl();
+                }
+            }
+            else
+            {
+                if (player.CurrentFavouriteCardId > 0)
+                {
+                    player.CurrentFavouriteCard = context.Cards.Find(player.CurrentFavouriteCardId);
+                    player.CurrentFavouriteCard.SetUrl();
+                }
+            }
             return player;
         }
 
 
 
-       // any unique team of players, a, b, a+b... is saved and given a team Id by the database
+        // any unique team of players, a, b, a+b... is saved and given a team Id by the database
         public int GetSetTeamId(Player player)
         {
             List<TeamMember> t = new List<TeamMember>();
@@ -144,8 +159,6 @@ namespace ClashCreative.Models
         }
         public int GetSetTeamId(List<TeamMember> teamMembers)
         {
-            //return variable, if it remains at -1 flags if statement to create new team Id
-            int teamId = -1;
 
             //defaults to 1 player
             bool twoVtwo = false;
@@ -159,29 +172,19 @@ namespace ClashCreative.Models
             //if it's
             if (!twoVtwo)
             {
-                myTeam = teams.Where(t => t.Tag == teamMembers[0].Tag || t.Tag2 == teamMembers[0].Tag).FirstOrDefault(); 
-                if(myTeam != null) { teamId = myTeam.TeamId; }
+                myTeam = teams.Where(t => t.Tag == teamMembers[0].Tag).FirstOrDefault();
             }
             else
             {
                 myTeam = teams.Where(t => ((t.Tag == teamMembers[0].Tag && t.Tag2 == teamMembers[1].Tag) || (t.Tag == teamMembers[1].Tag && t.Tag2 == teamMembers[0].Tag))).FirstOrDefault();
 
-
-                if (myTeam != null) 
-                { teamId = myTeam.TeamId;
-                if(myTeam.Tag == "#9V88U2CG2"|| myTeam.Tag == "#29PGJURQL")
-                        {
-                        Console.WriteLine();
-                    }
-                }
             }
 
-            if (teamId == -1)
-            { Console.WriteLine(); }
 
-            if (teamId == -1)
+            if (myTeam == null)
             {
                 myTeam = new Team();
+
                 myTeam.Tag = teamMembers[0].Tag;
                 myTeam.Name = teamMembers[0].Name;
                 myTeam.TeamName = teamMembers[0].Name;
@@ -197,17 +200,14 @@ namespace ClashCreative.Models
                 //sets return Id to the newly set Id within the Team model
                 if (myTeam == null)
                 {
-                    teamId = 1;
+                    myTeam.TeamId = 1;
                 }
-                else { teamId = context.Team.Count() + 1; }
+                else { myTeam.TeamId = context.Team.Count() + 1; }
 
-
-
-                myTeam.TeamId = teamId;
                 context.Team.Add(myTeam);
                 context.SaveChanges();
             }
-            return teamId;
+            return myTeam.TeamId;
         }
 
         //sorts the cards so no duplicates will be logged
@@ -219,7 +219,8 @@ namespace ClashCreative.Models
             var decks = context.Decks.OrderBy(p => p.DeckId).ToList();
             int deckId = -1;
             d.SortCards();
-            decks.ForEach(a => {
+            decks.ForEach(a =>
+            {
                 a.SortCards();
                 if (
                 a.Card1Id == d.Card1Id &&
@@ -248,7 +249,7 @@ namespace ClashCreative.Models
             }
             return deckId;
         }
-       
+
 
         #endregion
     }

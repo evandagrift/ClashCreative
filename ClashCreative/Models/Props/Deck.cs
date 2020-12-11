@@ -11,6 +11,8 @@ namespace ClashCreative.Models
         public Deck() { }
         public Deck(List<Card> c)
         {
+            if (c != null)
+            { 
             Card1Id = c[0].Id;
             Card2Id = c[1].Id;
             Card3Id = c[2].Id;
@@ -29,6 +31,7 @@ namespace ClashCreative.Models
             Card6 = c[5];
             Card7 = c[6];
             Card8 = c[7];
+            }
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -114,11 +117,15 @@ namespace ClashCreative.Models
         }
         public override string ToString()
         {
-            return "<div><div class=\"row\"> <img class=\"card-group\" src=\"" + Card1.Url + "\" width=\"100px\" /> <img class=\"card-group\" src=\"" + Card2.Url + "\" width=\"100px\" />" +
-                "<img class=\"card-group\" src=\"" + Card3.Url + "\" width=\"100px\" /> <img class=\"card-group\" src=\"" + Card4.Url + "\" width=\"100px\" /> </div>" +
-            "<div class=\"row\"> <img class=\"card-group\" src=\"" + Card5.Url + "\" width=\"100px\" /> <img class=\"card-group\" src=\"" + Card6.Url + "\" width=\"100px\" />" +
-                "<img class=\"card-group\" src=\"" + Card7.Url + "\" width=\"100px\" /> <img class=\"card-group\" src=\"" + Card8.Url + "\" width=\"100px\" /> </div></div>";
-        }
+            if (Card1Id < 1 || Card2Id < 1 || Card3Id < 1 || Card4Id < 1 || Card5Id < 1 || Card6Id < 1 || Card7Id < 1 || Card8Id < 1) { return ""; }
+            else
+            {
+                return "<div class=\"row\"> <img class=\"card-group\" src=\"" + Card1.Url + "\" width=\"100px\" /> <img class=\"card-group\" src=\"" + Card2.Url + "\" width=\"100px\" />" +
+              "<img class=\"card-group\" src=\"" + Card3.Url + "\" width=\"100px\" /> <img class=\"card-group\" src=\"" + Card4.Url + "\" width=\"100px\" /> </div>" +
+          "<div class=\"row\"> <img class=\"card-group\" src=\"" + Card5.Url + "\" width=\"100px\" /> <img class=\"card-group\" src=\"" + Card6.Url + "\" width=\"100px\" />" +
+              "<img class=\"card-group\" src=\"" + Card7.Url + "\" width=\"100px\" /> <img class=\"card-group\" src=\"" + Card8.Url + "\" width=\"100px\" /> </div>";
+            }
+            }
     }
 
 }

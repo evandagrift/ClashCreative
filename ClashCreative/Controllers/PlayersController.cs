@@ -20,60 +20,159 @@ namespace ClashCreative.Controllers
             context = c;
             _clientFactory = f;
         }
-        public async Task<RedirectToActionResult> Index(HomePageModel model)
-        {
-            if (model.Player != null || model.Clan !=null)
-            {
-                if (model.Player.Tag != null)
-                {
-                    ClashJson clashJson = new ClashJson(_clientFactory);
 
-                    Player playerUpdated = await clashJson.GetPlayerData(model.Player.Tag);
-                    if (playerUpdated != null)
-                    {
-                        return RedirectToAction("PlayerData", model.Player);
-                    }
-                    else
-                    {
-                        model.Warning = "The Tag you entered is not valid";
-                        return RedirectToAction("Index", "Home", model);
-                    }
-                }
-                else if (model.Clan.Tag != null)
-                {
-                    return RedirectToAction("ClanData", model.Clan);
-                }
-                else
-                {
-                    model.Warning = "The Tag you entered is not valid";
-                    return RedirectToAction("Index", "Home", model);
-                }
-            }
-            else
+        [HttpPost]
+        public async Task<IActionResult> Clans(Clan clan)
+        {
+
+            ClashJson clashJson = new ClashJson(_clientFactory);
+            ClansModel model = new ClansModel(context);
+            Clan returnClan = new Clan();
+            try
             {
-                return RedirectToAction("AllPlayers", model);
+                returnClan = await clashJson.GetClanData(clan.Tag);
             }
+            catch
+            {
+                returnClan = new Clan();
+                returnClan.Tag = "invalid";
+            }
+            if(returnClan== null)
+            {
+                returnClan = new Clan();
+                returnClan.Tag = "invalid";
+            }
+            model.SearchedClan = returnClan;
+
+            return View(model);
         }
 
-        public async Task<IActionResult> AllPlayers()
+        [HttpPost]
+        public async Task<IActionResult> Players(Player player)
         {
-            return View();
+
+            ClashJson clashJson = new ClashJson(_clientFactory);
+            ClashDB clashDB = new ClashDB(context);
+            int cardsInGame = context.Cards.Count();
+
+            PlayersModel model = new PlayersModel(context);
+            Player returnPlayer = new Player();
+            try
+            {
+                returnPlayer = await clashJson.GetPlayerData(player.Tag);
+            }
+            catch
+            {
+                returnPlayer = new Player();
+                returnPlayer.Tag = "invalid";
+            }
+            if (returnPlayer == null)
+            {
+                returnPlayer = new Player();
+                returnPlayer.Tag = "invalid";
+            }
+            for (int p = 0; p < model.Players.Count(); p++)
+            {
+                if (model.Players[p].Tag != null && model.Players[p].Tag != "invalid")
+                {
+                    model.Players[p] = await clashJson.GetPlayerData(model.Players[p].Tag);
+                    model.Players[p] = await clashDB.FillPlayerDBData(model.Players[p]);
+
+                    model.Players[p].CurrentDeck.ForEach((d => { d.SetUrl(); }));
+                    model.Players[p].Deck = new Deck(model.Players[p].CurrentDeck);
+                    model.Players[p].Deck.SetCards(context);
+                    model.Players[p].CardsInGame = cardsInGame;
+
+                    if (model.Players[p].Clan != null)
+                    {
+                        model.Players[p].ClanTag = model.Players[p].Clan.Tag;
+                    }
+                }
+
+            }
+
+            if(returnPlayer.Tag != null && returnPlayer.Tag != "invalid")
+            { 
+                returnPlayer = await clashDB.FillPlayerDBData(returnPlayer);
+                returnPlayer.ClanTag = returnPlayer.Clan.Tag;
+                returnPlayer.CardsInGame = cardsInGame;
+
+                returnPlayer.Deck.Card1.SetUrl();
+                returnPlayer.Deck.Card2.SetUrl();
+                returnPlayer.Deck.Card3.SetUrl();
+                returnPlayer.Deck.Card4.SetUrl();
+                returnPlayer.Deck.Card5.SetUrl();
+                returnPlayer.Deck.Card6.SetUrl();
+                returnPlayer.Deck.Card7.SetUrl();
+                returnPlayer.Deck.Card8.SetUrl();
+            }
+
+            model.SearchedPlayer = returnPlayer;
+
+            return View(model);
         }
-        public async Task<IActionResult> Clans(Player player)
+        public async Task<IActionResult> Clans()
         {
-            return View();
+            ClansModel model = new ClansModel(context);
+            return View(model);
         }
-        public async Task<IActionResult> PlayerData(Player player)
+        public async Task<IActionResult> Players()
         {
             ClashJson clashJson = new ClashJson(_clientFactory);
+            ClashDB clashDB = new ClashDB(context);
+            int cardsInGame = context.Cards.Count();
+
+            PlayersModel model = new PlayersModel(context);
+            for (int p = 0; p < model.Players.Count(); p++)
+            {
+                if (model.Players[p].Tag != null && model.Players[p].Tag != "invalid")
+                {
+                    model.Players[p] = await clashJson.GetPlayerData(model.Players[p].Tag);
+                    model.Players[p] = await clashDB.FillPlayerDBData(model.Players[p]);
+
+                    model.Players[p].CurrentDeck.ForEach((d => { d.SetUrl(); }));
+                    model.Players[p].Deck = new Deck(model.Players[p].CurrentDeck);
+                    model.Players[p].Deck.SetCards(context);
+                    model.Players[p].CardsInGame = cardsInGame;
+
+                    if (model.Players[p].Clan != null)
+                    {
+                        model.Players[p].ClanTag = model.Players[p].Clan.Tag;
+                    }
+                }
+
+            }
+            return View(model);
+        }
+
+
+        public async Task<IActionResult> PlayerData(Player player)
+        {
+            ClashDB clashDB = new ClashDB(context);
+            ClashJson clashJson = new ClashJson(_clientFactory);
+
+            PlayerDataModel model = new PlayerDataModel();
+            Player existingPlayer = context.Players.Where(p => p.Tag == player.Tag).FirstOrDefault();
 
             Player playerUpdated = await clashJson.GetPlayerData(player.Tag);
-            Deck deck = new Deck(playerUpdated.CurrentDeck);
-            PlayerDataModel model = new PlayerDataModel();
-            model.CardsInGame = context.Cards.Count();
+            playerUpdated.CurrentFavouriteCard.SetUrl();
+            playerUpdated = await clashDB.FillPlayerDBData(playerUpdated);
+            playerUpdated.ClanTag = playerUpdated.Clan.Tag;
+
+            playerUpdated.Deck = new Deck(playerUpdated.CurrentDeck);
+            playerUpdated.Deck.SetCards(context);
+            playerUpdated.CardsInGame = context.Cards.Count();
             model.Player = playerUpdated;
-            model.Deck = deck;
-            model.Deck.SetCards(context);
+
+
+
+
+            //if this player hasn't been logged add the to the DB
+            if (existingPlayer == null)
+            {
+                context.Players.Add(playerUpdated);
+                context.SaveChanges();
+            }
             return View(model);
         }
 

@@ -8,7 +8,5 @@ namespace ClashCreative.Models
     public class PlayerDataModel
     {
         public Player Player { get; set; }
-        public Deck Deck { get; set; }
-        public  int CardsInGame { get; set; }
     }
 }

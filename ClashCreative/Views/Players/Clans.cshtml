@@ -1,6 +1,50 @@
-﻿@*
+﻿@model ClansModel
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-}
-<h1>Clan Data will go here</h1>
+
+<div class="container" style="background-color:#D4E6F1">
+
+    @if (Model.SearchedClan != null)
+    {
+    <div class="text-center">
+        @if (Model.SearchedClan.Tag != "invalid")
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h1>@Model.SearchedClan.Name : @Model.SearchedClan.Tag</h1>
+                </div>
+                <div class="card card-body">
+                    @Html.Raw(Model.SearchedClan.ToString());
+                </div>
+            </div>
+        }
+        else
+        {<h1>*Not a valid Clan Tag*</h1>}
+        <hr />
+    </div>
+    }
+
+    <div class="text-center">
+        <h2 class="mb-3">All Logged Clans</h2>
+        <hr />
+        @foreach (Clan clan in Model.Clans)
+        {
+            <a class="btn btn-outline-secondary text-dark mb-1" style="width:100%" data-toggle="collapse" href="@Model.SetHrefId(clan.Tag)" role="button" aria-expanded="false">
+                <div class="container-fluid d-inline-flex">
+                    <div class="col-3"><b>Clan Score:</b>@clan.ClanScore</div>
+                    <div class="col-6"><b>Name:</b>@clan.Name</div>
+                    <div class="col-3"><b>Required Trophies</b>@clan.RequiredTrophies</div>
+                </div>
+            </a>
+            <div class="collapse" id="@Model.GetHrefID(clan.Tag)">
+                <div class="card card-body">
+                    @Html.Raw(clan.ToString());
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+

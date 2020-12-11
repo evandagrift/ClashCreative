@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClashCreative.Migrations
 {
     [DbContext(typeof(ClashContext))]
-    [Migration("20201207121027_Initial_MYSQL")]
+    [Migration("20201210120930_Initial_MYSQL")]
     partial class Initial_MYSQL
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,6 +141,12 @@ namespace ClashCreative.Migrations
 
                     b.Property<string>("ClanChestStatus")
                         .HasColumnType("text");
+
+                    b.Property<int>("ClanScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClanWarTrophies")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
