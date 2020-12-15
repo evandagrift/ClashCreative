@@ -13,21 +13,22 @@ namespace ClashCreative.Controllers
         private readonly IHttpClientFactory _clientFactory;
         private ClashContext context;
 
-        //string myPlayerTag = "#29PGJURQL";
-        //string myClanTag = "#8CYPL8R";
         public PlayersController(ClashContext c, IHttpClientFactory f)
         {
             context = c;
             _clientFactory = f;
         }
 
+        //clan page from searched clan
         [HttpPost]
         public async Task<IActionResult> Clans(Clan clan)
         {
-
+            //json handler and page model
             ClashJson clashJson = new ClashJson(_clientFactory);
             ClansModel model = new ClansModel(context);
+
             Clan returnClan = new Clan();
+            //tries to get the clan data, if it fails or remains null it will be tagged "invalid"
             try
             {
                 returnClan = await clashJson.GetClanData(clan.Tag);
@@ -42,21 +43,29 @@ namespace ClashCreative.Controllers
                 returnClan = new Clan();
                 returnClan.Tag = "invalid";
             }
+
+            //loads the searched clan into the model
             model.SearchedClan = returnClan;
 
             return View(model);
         }
 
+        //players page from searched player
         [HttpPost]
         public async Task<IActionResult> Players(Player player)
         {
 
             ClashJson clashJson = new ClashJson(_clientFactory);
             ClashDB clashDB = new ClashDB(context);
+
+            //int counting cards of game so player can have x/cards
             int cardsInGame = context.Cards.Count();
 
+            
             PlayersModel model = new PlayersModel(context);
             Player returnPlayer = new Player();
+
+            //tries to get the player from Clash Api if not retrieved sets tags to "invalid"
             try
             {
                 returnPlayer = await clashJson.GetPlayerData(player.Tag);
@@ -71,6 +80,8 @@ namespace ClashCreative.Controllers
                 returnPlayer = new Player();
                 returnPlayer.Tag = "invalid";
             }
+
+            //for all the players in the list it populates their data 
             for (int p = 0; p < model.Players.Count(); p++)
             {
                 if (model.Players[p].Tag != null && model.Players[p].Tag != "invalid")
@@ -85,12 +96,14 @@ namespace ClashCreative.Controllers
 
                     if (model.Players[p].Clan != null)
                     {
+                        //sets the clan tag
                         model.Players[p].ClanTag = model.Players[p].Clan.Tag;
                     }
                 }
 
             }
 
+            //if the selected tag is searchable it fill's the player's data
             if(returnPlayer.Tag != null && returnPlayer.Tag != "invalid")
             { 
                 returnPlayer = await clashDB.FillPlayerDBData(returnPlayer);
@@ -107,15 +120,20 @@ namespace ClashCreative.Controllers
                 returnPlayer.Deck.Card8.SetUrl();
             }
 
+            //model's searched player is set
             model.SearchedPlayer = returnPlayer;
 
+            //returns the model to the view
             return View(model);
         }
+
+        
         public async Task<IActionResult> Clans()
         {
             ClansModel model = new ClansModel(context);
             return View(model);
         }
+
         public async Task<IActionResult> Players()
         {
             ClashJson clashJson = new ClashJson(_clientFactory);
@@ -125,6 +143,7 @@ namespace ClashCreative.Controllers
             PlayersModel model = new PlayersModel(context);
             for (int p = 0; p < model.Players.Count(); p++)
             {
+                //if the player is a valid player it fills the model
                 if (model.Players[p].Tag != null && model.Players[p].Tag != "invalid")
                 {
                     model.Players[p] = await clashJson.GetPlayerData(model.Players[p].Tag);
@@ -167,7 +186,7 @@ namespace ClashCreative.Controllers
 
 
 
-            //if this player hasn't been logged add the to the DB
+            //if this player hasn't been logged add them to the DB
             if (existingPlayer == null)
             {
                 context.Players.Add(playerUpdated);
@@ -178,3 +197,6 @@ namespace ClashCreative.Controllers
 
     }
 }
+
+//string myPlayerTag = "#29PGJURQL";
+//string myClanTag = "#8CYPL8R";

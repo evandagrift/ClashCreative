@@ -45,7 +45,6 @@ namespace ClashCreative.Models
             {
                 //Returns all clans in DB ordered by Clan Tag
                 var players = context.Players.OrderByDescending(p => p.UpdateTime).ToList();
-                players = players.GetRange(0, 25);
                 //cycles through all clans in the DB ordered by Clan Tag
                 players.ForEach((p =>
                 {

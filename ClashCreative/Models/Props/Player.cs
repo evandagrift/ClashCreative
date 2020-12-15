@@ -9,6 +9,7 @@ namespace ClashCreative.Models
 {
     public class Player
     {
+        //this doubles as a class for Newtonsoft Json and EF Core DB Models
         [Key]
         public int Id { get; set; }
 
@@ -56,55 +57,42 @@ namespace ClashCreative.Models
         public DateTime UpdateTime { get; set; }
 
 
+        //the html that displays the clan card used in the pop down menu's and header of searched clan
         public override string ToString()
         {
-            string returnString = "<div class=\"card card-group\"> <div class=\"container-fluid d-inline-flex\"> <div class=\"col-2\"> <p><b>Name:</b>" + Name + "</p> <p><b>Tag:</b>" + Tag + "</p> <p><b>Level:</b>" + ExpLevel.ToString() + "</p>";
-
-            if (ExpLevel == 13) { returnString += "<p><b>Star Points:</b>" + StarPoints.ToString() + "</p>"; }
-
-            returnString += "<p><b>Current Tropies:</b>" + Trophies.ToString() + "</p><p><b>Highest Trophies:</b>" + BestTrophies + "</p></div>";
-
-            returnString += "<div class=\"col-2\"><p><b>All Time Wins:</b>" + Wins.ToString() + "</p><p><b>All Time Losses:</b>" + Losses.ToString() + "</p>";
-            Console.WriteLine();
-            returnString += "<p><b>Current Favorite Card:</b>" + CurrentFavouriteCard.Name + "</p><img class=\"text-center\" src=\"" + CurrentFavouriteCard.Url + "\" width=\"64px\" />";
-            returnString += "<p><b>Cards Discovered:</b>" + CardsDiscovered.ToString() + "/"+CardsInGame.ToString()+"</p></div>";
-
-            returnString += "<div class=\"col-3\">";
-            if (Clan.Name != null)
+            if (Clan != null)
             {
-                returnString += "<p><b>Clan Name:</b>" + Clan.Name + "</p>";
+                string returnString = "<div class=\"card card-group\"> <div class=\"container-fluid d-inline-flex\"> <div class=\"col-2\"> <p><b>Name:</b>" + Name + "</p> <p><b>Tag:</b>" + Tag + "</p> <p><b>Level:</b>" + ExpLevel.ToString() + "</p>";
+
+                if (ExpLevel == 13) { returnString += "<p><b>Star Points:</b>" + StarPoints.ToString() + "</p>"; }
+
+                returnString += "<p><b>Current Tropies:</b>" + Trophies.ToString() + "</p><p><b>Highest Trophies:</b>" + BestTrophies + "</p></div>";
+
+                returnString += "<div class=\"col-2\"><p><b>All Time Wins:</b>" + Wins.ToString() + "</p><p><b>All Time Losses:</b>" + Losses.ToString() + "</p>";
+                Console.WriteLine();
+                returnString += "<p><b>Current Favorite Card:</b>" + CurrentFavouriteCard.Name + "</p><img class=\"text-center\" src=\"" + CurrentFavouriteCard.Url + "\" width=\"64px\" />";
+                returnString += "<p><b>Cards Discovered:</b>" + CardsDiscovered.ToString() + "/" + CardsInGame.ToString() + "</p></div>";
+
+                returnString += "<div class=\"col-3\">";
+                if (Clan.Name != null)
+                {
+                    returnString += "<p><b>Clan Name:</b>" + Clan.Name + "</p>";
+                }
+                if (Clan.Tag != null)
+                {
+                    returnString += "<p><b>Clan Tag:</b>" + ClanTag + "</p>";
+                }
+                else { returnString += "<h2 class=\"text-center m-2\">Not In a Clan</h2>"; }
+
+                returnString += "<p><b>Recent Donations:</b>" + Donations.ToString() + "</p><p><b>Recent Donations Recieved:</b>" + DonationsReceived.ToString() + "</p>";
+                returnString += "<p><b>Total Donations:</b>" + TotalDonations.ToString() + "</p><p><b>Total Donations Recieved:</b>" + ClanCardsCollected.ToString() + "</p></div>";
+
+
+                returnString += "<div class=\"col-5 m-0\"><div class=\"text-center\"><p><b>Current Deck</b></p> " + Deck.ToString() + "<p>Profile Updated:" + UpdateTime + "</p></div></div></div></div>";
+
+                return returnString;
             }
-            if (Clan.Tag != null)
-            {
-                returnString += "<p><b>Clan Tag:</b>" + ClanTag + "</p>";
-            }
-            else { returnString += "<h2 class=\"text-center m-2\">Not In a Clan</h2>"; }
-
-            returnString += "<p><b>Recent Donations:</b>" + Donations.ToString() + "</p><p><b>Recent Donations Recieved:</b>" + DonationsReceived.ToString() + "</p>";
-            returnString += "<p><b>Total Donations:</b>" + TotalDonations.ToString() + "</p><p><b>Total Donations Recieved:</b>" + ClanCardsCollected.ToString() + "</p></div>";
-
-
-            returnString += "<div class=\"col-5 m-0\"><div class=\"text-center\"><p><b>Current Deck</b></p> " + Deck.ToString() + "<p>Profile Updated:"+UpdateTime+ "</p></div></div></div></div>";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            return returnString;
+            else { return null; }
         }
     }
 }

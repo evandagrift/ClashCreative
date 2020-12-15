@@ -14,8 +14,6 @@ namespace ClashCreative.Controllers
 {
     public class HomeController : Controller
     { 
-        private readonly ILogger<HomeController> _logger;
-
         private readonly IHttpClientFactory _clientFactory;
         private ClashContext context;
         public HomeController(ClashContext c, IHttpClientFactory f)
@@ -23,21 +21,6 @@ namespace ClashCreative.Controllers
             context = c;
             _clientFactory = f;
         }
-        
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-
-
-
 
         public async Task<IActionResult> Index()
         {
@@ -72,16 +55,12 @@ namespace ClashCreative.Controllers
                 //creates an instance of the model because the constructor holds crucial formatting variables
                 HomePageModel model = new HomePageModel();
 
-
-
             return View(model);
         }
-
-
-
-
     }
 }
+
+//saving in case I want later
 //string myPlayerTag = "#29PGJURQL";
 //string myClanTag = "#8CYPL8R";
 //string sorenClanTag = "#L2JUGRVR";
@@ -95,38 +74,3 @@ namespace ClashCreative.Controllers
 //var frog = await GetPlayerData(dangerFrog);
 //var rando = await GetPlayerData(aPlayerTag);
 
-//Console.WriteLine();
-
-
-
-//Deck myDeck = new Deck(me.CurrentDeck);
-//int myID =  GetDeckID(myDeck);
-
-//Deck frogDeck = new Deck(frog.CurrentDeck);
-//int frogID = GetDeckID(frogDeck);
-
-//bool v = (frogDeck == myDeck);
-
-//  var cards = await GetCards();
-
-// // await context.AddRangeAsync(cards);
-//  await context.AddAsync(player.CurrentDeck);
-// // await context.Players.AddAsync(player);
-//  context.SaveChanges();
-
-
-//  //var battle = await GetBattleData(myPlayerTag);
-//  Console.WriteLine();
-
-//  // Pass the data into the View
-/*
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-*/

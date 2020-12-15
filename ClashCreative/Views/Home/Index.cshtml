@@ -11,6 +11,7 @@
             <div class="form-group">
                 <ul class="nav nav-tabs">
 
+                    <!--Buttons to select what you're searching by, see handy JS at bottom-->
                     <li class="nav-item">
                         <button id="$playerButton" class="nav-link active" type="submit" onclick="">Player</button>
                     </li>
@@ -19,7 +20,9 @@
                         <button id="$clanButton" class="nav-link" type="button" onclick="setClanActive()">Clan</button>
                     </li>
                 </ul>
-                <form id="$playerForm" class="" method="post" style="hidden">
+
+                <!--two forum inputs adding to seperate models and directing to different pages toggled in JS via onclick of above items-->
+                <form id="$playerForm" class="" method="post">
 
                     <input id="$playerInput" class="form-control" asp-for="Player.Tag" placeholder="Example:#29PGJURQL" />
                     <button id="$playerSubmitButton" class="btn-primary float-left" asp-controller="Players" asp-action="Players" type="submit">Get Player Data</button>
