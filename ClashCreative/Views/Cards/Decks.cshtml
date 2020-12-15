@@ -13,21 +13,24 @@
         <h1>Top 10 Logged Decks</h1>
 
         <!--cycles through displaying the list of top 10 logged decks-->
-        @foreach (Deck deck in Model)
+        @if (Model != null)
         {
-            <div class="card m-3 p-2 ">
-                <div class="container-fluid d-inline-flex">
-                    <div class="col-6 border-right">
-                        @Html.Raw(deck.ToString())
-                    </div>
-                    <div class="col-6 pt-4">
-                        <p><b>Deck Id:</b>@deck.DeckId</p>
-                        <p><b>Win:</b>@deck.Wins</p>
-                        <p><b>Loss:</b>@deck.Loss</p>
-                        <p><b>Win loss ratio:</b>@deck.WinLossRate</p>
+            @foreach (Deck deck in Model)
+            {
+                <div class="card m-3 p-2 ">
+                    <div class="container-fluid d-inline-flex">
+                        <div class="col-6 border-right">
+                            @Html.Raw(deck.ToString())
+                        </div>
+                        <div class="col-6 pt-4">
+                            <p><b>Deck Id:</b>@deck.DeckId</p>
+                            <p><b>Win:</b>@deck.Wins</p>
+                            <p><b>Loss:</b>@deck.Loss</p>
+                            <p><b>Win loss ratio:</b>@deck.WinLossRate</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
     </div>
 </div>

@@ -28,6 +28,8 @@
     <div class="text-center">
         <h2 class="mb-3">All Logged Clans</h2>
         <hr />
+        @if(Model.Clans != null)
+        { 
         @foreach (Clan clan in Model.Clans)
         {
             <a class="btn btn-outline-secondary text-dark mb-1" style="width:100%" data-toggle="collapse" href="@Model.SetHrefId(clan.Tag)" role="button" aria-expanded="false">
@@ -43,6 +45,7 @@
                 </div>
             </div>
 
+        }
         }
     </div>
 </div>

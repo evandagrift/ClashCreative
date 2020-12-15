@@ -30,7 +30,7 @@ namespace ClashCreative
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<ClashContext>(options => options.UseMySQL(Configuration["ConnectionStrings:LocalConnectionString"]));
+            services.AddDbContext<ClashContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:LocalConnectionString"]));
 
             services.AddHttpClient("API Client", client => {
                 client.BaseAddress = new Uri("https://api.clashroyale.com/");

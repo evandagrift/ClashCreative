@@ -166,48 +166,53 @@ namespace ClashCreative.Models
             //if there are two players in the team members list, sets to 2v2
             if (teamMembers.Count == 2) twoVtwo = true;
 
-            //searches db for all teams and focuses that search based on wether on not it's 2v2
-            var teams = context.Team.Where(t => t.TwoVTwo == twoVtwo);
-            Team myTeam = new Team();
-            //if it's
-            if (!twoVtwo)
+            int teamId = 0;
+            //if there are teams in the DB
+            if (context.Team.Count() > 0)
             {
-                myTeam = teams.Where(t => t.Tag == teamMembers[0].Tag).FirstOrDefault();
+                Team myTeam = new Team();
+
+                //searches db for all teams and focuses that search based on wether on not it's 2v2
+                var teams = context.Team.Where(t => t.TwoVTwo == twoVtwo);
+
+                //if it's no 2v2
+                if (!twoVtwo)
+                {
+                    myTeam = teams.Where(t => t.Tag == teamMembers[0].Tag).FirstOrDefault();
+                }
+                else
+                {
+                    myTeam = teams.Where(t => ((t.Tag == teamMembers[0].Tag && t.Tag2 == teamMembers[1].Tag) || (t.Tag == teamMembers[1].Tag && t.Tag2 == teamMembers[0].Tag))).FirstOrDefault();
+
+                }
+                if (myTeam != null) { teamId = myTeam.TeamId; }
+                
             }
-            else
+
+            //if a team hasn't been found with your specifications it creates a new one
+            if (teamId == 0)
             {
-                myTeam = teams.Where(t => ((t.Tag == teamMembers[0].Tag && t.Tag2 == teamMembers[1].Tag) || (t.Tag == teamMembers[1].Tag && t.Tag2 == teamMembers[0].Tag))).FirstOrDefault();
+                Team newTeam = new Team();
+                newTeam = new Team();
 
-            }
-
-
-            if (myTeam == null)
-            {
-                myTeam = new Team();
-
-                myTeam.Tag = teamMembers[0].Tag;
-                myTeam.Name = teamMembers[0].Name;
-                myTeam.TeamName = teamMembers[0].Name;
+                newTeam.Tag = teamMembers[0].Tag;
+                newTeam.Name = teamMembers[0].Name;
+                newTeam.TeamName = teamMembers[0].Name;
 
                 if (twoVtwo)
                 {
-                    myTeam.TwoVTwo = true;
-                    myTeam.Tag2 = teamMembers[1].Tag;
-                    myTeam.Name2 = teamMembers[1].Name;
-                    myTeam.TeamName += " " + teamMembers[1].Name;
+                    newTeam.TwoVTwo = true;
+                    newTeam.Tag2 = teamMembers[1].Tag;
+                    newTeam.Name2 = teamMembers[1].Name;
+                    newTeam.TeamName += " " + teamMembers[1].Name;
                 }
 
-                //sets return Id to the newly set Id within the Team model
-                if (myTeam == null)
-                {
-                    myTeam.TeamId = 1;
-                }
-                else { myTeam.TeamId = context.Team.Count() + 1; }
-
-                context.Team.Add(myTeam);
+                context.Team.Add(newTeam);
                 context.SaveChanges();
+                teamId = newTeam.TeamId;
             }
-            return myTeam.TeamId;
+            return teamId;
+
         }
 
         //sorts the cards so no duplicates will be logged

@@ -30,7 +30,9 @@ namespace ClashCreative.Models
             int savedBattles = 0;
 
             //fills the list of player data to add to the DB
-            for (int m = 0; m < clan.Members; m++)
+            // for (int m = 0; m < clan.Members; m++)
+
+            for (int m = 0; m < 15; m++)
             {
                 //gets basic player
                 var player = await ClashJson.GetPlayerData(clan.MemberList[m].Tag);
@@ -44,6 +46,7 @@ namespace ClashCreative.Models
             for (int p = 0; p < playersToAdd.Count(); p++)
             {
                 var battles = await ClashJson.GetListOfBattles(playersToAdd[p].Tag);
+                battles = battles.GetRange(0,10);
                 savedBattles += await ClashDB.SaveBattles(battles);
             }
 

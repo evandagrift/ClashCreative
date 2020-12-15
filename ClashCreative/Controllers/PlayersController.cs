@@ -38,7 +38,7 @@ namespace ClashCreative.Controllers
                 returnClan = new Clan();
                 returnClan.Tag = "invalid";
             }
-            if(returnClan== null)
+            if (returnClan == null)
             {
                 returnClan = new Clan();
                 returnClan.Tag = "invalid";
@@ -61,7 +61,7 @@ namespace ClashCreative.Controllers
             //int counting cards of game so player can have x/cards
             int cardsInGame = context.Cards.Count();
 
-            
+
             PlayersModel model = new PlayersModel(context);
             Player returnPlayer = new Player();
 
@@ -104,8 +104,8 @@ namespace ClashCreative.Controllers
             }
 
             //if the selected tag is searchable it fill's the player's data
-            if(returnPlayer.Tag != null && returnPlayer.Tag != "invalid")
-            { 
+            if (returnPlayer.Tag != null && returnPlayer.Tag != "invalid")
+            {
                 returnPlayer = await clashDB.FillPlayerDBData(returnPlayer);
                 returnPlayer.ClanTag = returnPlayer.Clan.Tag;
                 returnPlayer.CardsInGame = cardsInGame;
@@ -127,7 +127,7 @@ namespace ClashCreative.Controllers
             return View(model);
         }
 
-        
+
         public async Task<IActionResult> Clans()
         {
             ClansModel model = new ClansModel(context);
@@ -141,25 +141,28 @@ namespace ClashCreative.Controllers
             int cardsInGame = context.Cards.Count();
 
             PlayersModel model = new PlayersModel(context);
-            for (int p = 0; p < model.Players.Count(); p++)
+
+            if (model.Players != null)
             {
-                //if the player is a valid player it fills the model
-                if (model.Players[p].Tag != null && model.Players[p].Tag != "invalid")
+                for (int p = 0; p < model.Players.Count(); p++)
                 {
-                    model.Players[p] = await clashJson.GetPlayerData(model.Players[p].Tag);
-                    model.Players[p] = await clashDB.FillPlayerDBData(model.Players[p]);
-
-                    model.Players[p].CurrentDeck.ForEach((d => { d.SetUrl(); }));
-                    model.Players[p].Deck = new Deck(model.Players[p].CurrentDeck);
-                    model.Players[p].Deck.SetCards(context);
-                    model.Players[p].CardsInGame = cardsInGame;
-
-                    if (model.Players[p].Clan != null)
+                    //if the player is a valid player it fills the model
+                    if (model.Players[p].Tag != null && model.Players[p].Tag != "invalid")
                     {
-                        model.Players[p].ClanTag = model.Players[p].Clan.Tag;
+                        model.Players[p] = await clashJson.GetPlayerData(model.Players[p].Tag);
+                        model.Players[p] = await clashDB.FillPlayerDBData(model.Players[p]);
+
+                        model.Players[p].CurrentDeck.ForEach((d => { d.SetUrl(); }));
+                        model.Players[p].Deck = new Deck(model.Players[p].CurrentDeck);
+                        model.Players[p].Deck.SetCards(context);
+                        model.Players[p].CardsInGame = cardsInGame;
+
+                        if (model.Players[p].Clan != null)
+                        {
+                            model.Players[p].ClanTag = model.Players[p].Clan.Tag;
+                        }
                     }
                 }
-
             }
             return View(model);
         }
