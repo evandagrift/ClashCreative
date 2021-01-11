@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackRoyaleAPI", "TrackRoyaleAPI\TrackRoyaleAPI.csproj", "{93794850-0BB7-4E47-8581-FE1417967AA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyaleTrackerClasses", "RoyaleTrackerClasses\RoyaleTrackerClasses.csproj", "{FEA5E756-C9C1-4851-87F3-DEAEDA4C0313}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +24,14 @@ Global
 		{F6EA7CD5-EE00-4170-967C-62D10A3DFD67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6EA7CD5-EE00-4170-967C-62D10A3DFD67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6EA7CD5-EE00-4170-967C-62D10A3DFD67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93794850-0BB7-4E47-8581-FE1417967AA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93794850-0BB7-4E47-8581-FE1417967AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93794850-0BB7-4E47-8581-FE1417967AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93794850-0BB7-4E47-8581-FE1417967AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEA5E756-C9C1-4851-87F3-DEAEDA4C0313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA5E756-C9C1-4851-87F3-DEAEDA4C0313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEA5E756-C9C1-4851-87F3-DEAEDA4C0313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEA5E756-C9C1-4851-87F3-DEAEDA4C0313}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

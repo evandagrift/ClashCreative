@@ -7669,11 +7669,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\FreshZeph\\source\\repos\\ClashCreative\\ClashCreative\\ClashCreative.csproj",
+      "projectUniqueName": "C:\\Users\\FreshZeph\\Desktop\\Clash Creative 2021\\ClashCreative\\ClashCreative\\ClashCreative.csproj",
       "projectName": "ClashCreative",
-      "projectPath": "C:\\Users\\FreshZeph\\source\\repos\\ClashCreative\\ClashCreative\\ClashCreative.csproj",
+      "projectPath": "C:\\Users\\FreshZeph\\Desktop\\Clash Creative 2021\\ClashCreative\\ClashCreative\\ClashCreative.csproj",
       "packagesPath": "C:\\Users\\FreshZeph\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\FreshZeph\\source\\repos\\ClashCreative\\ClashCreative\\obj\\",
+      "outputPath": "C:\\Users\\FreshZeph\\Desktop\\Clash Creative 2021\\ClashCreative\\ClashCreative\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",

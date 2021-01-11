@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Rah6rltpxdD/hWVwRddbh60drGsYUUO6+2I3e3YATXcs/tXFKxw3kt749Uc7fEm++HeefRKosm8Q0tWUsG03xw==",
+  "dgSpecHash": "neOvkyQoCxC53wluQdAgjWY5xT1intBAr/LoAfnU9iXh2C2y5mBAe4NoxCHqAQaN9gpRU7yvqJj2oegtnfziqw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\FreshZeph\\source\\repos\\ClashCreative\\ClashCreative\\ClashCreative.csproj",
+  "projectFilePath": "C:\\Users\\FreshZeph\\Desktop\\Clash Creative 2021\\ClashCreative\\ClashCreative\\ClashCreative.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\FreshZeph\\.nuget\\packages\\bouncycastle.netcore\\1.8.3\\bouncycastle.netcore.1.8.3.nupkg.sha512",
     "C:\\Users\\FreshZeph\\.nuget\\packages\\google.protobuf\\3.11.4\\google.protobuf.3.11.4.nupkg.sha512",
