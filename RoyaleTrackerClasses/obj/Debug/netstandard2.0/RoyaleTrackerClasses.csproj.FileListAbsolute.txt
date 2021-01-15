@@ -3,3 +3,7 @@ C:\Users\FreshZeph\Desktop\Clash Creative 2021\ClashCreative\RoyaleTrackerClasse
 C:\Users\FreshZeph\Desktop\Clash Creative 2021\ClashCreative\RoyaleTrackerClasses\obj\Debug\netstandard2.0\RoyaleTrackerClasses.csprojAssemblyReference.cache
 C:\Users\FreshZeph\Desktop\Clash Creative 2021\ClashCreative\RoyaleTrackerClasses\obj\Debug\netstandard2.0\RoyaleTrackerClasses.AssemblyInfoInputs.cache
 C:\Users\FreshZeph\Desktop\Clash Creative 2021\ClashCreative\RoyaleTrackerClasses\obj\Debug\netstandard2.0\RoyaleTrackerClasses.AssemblyInfo.cs
+C:\Users\FreshZeph\Desktop\Clash Creative 2021\ClashCreative\RoyaleTrackerClasses\bin\Debug\netstandard2.0\RoyaleTrackerClasses.pdb
+C:\Users\FreshZeph\Desktop\Clash Creative 2021\ClashCreative\RoyaleTrackerClasses\obj\Debug\netstandard2.0\RoyaleTrackerClasses.csproj.CoreCompileInputs.cache
+C:\Users\FreshZeph\Desktop\Clash Creative 2021\ClashCreative\RoyaleTrackerClasses\obj\Debug\netstandard2.0\RoyaleTrackerClasses.dll
+C:\Users\FreshZeph\Desktop\Clash Creative 2021\ClashCreative\RoyaleTrackerClasses\obj\Debug\netstandard2.0\RoyaleTrackerClasses.pdb
