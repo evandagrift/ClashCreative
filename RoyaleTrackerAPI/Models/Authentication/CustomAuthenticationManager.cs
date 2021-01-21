@@ -1,4 +1,5 @@
-﻿using RoyaleTrackerClasses;
+﻿using RoyaleTrackerAPI.Models;
+using RoyaleTrackerClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace RoyaleTrackerAPI
         public IDictionary<string, Tuple<string, string>> Tokens => tokens;
 
 
-        public string Authenticate(string username, string password, ClashContext context)
+        public string Authenticate(string username, string password, TRContext context)
         {
             User user = context.Users.Where(u => u.Username == username && u.Password == password).FirstOrDefault();
             

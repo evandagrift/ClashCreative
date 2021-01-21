@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RoyaleTrackerAPI.Models;
 
 namespace RoyaleTrackerAPI
 {
@@ -30,7 +31,7 @@ namespace RoyaleTrackerAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<ClashContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:LocalConnectionString"]));
+            services.AddDbContext<TRContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:LocalConnectionString"]));
 
             services.AddAuthentication("Basic").AddScheme<AuthenticationSchemeOptions, CustomAuthenticationHandler>("Basic", null);
 

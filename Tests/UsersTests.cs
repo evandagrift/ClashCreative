@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using RoyaleTrackerAPI;
+using RoyaleTrackerAPI.Models;
 using RoyaleTrackerAPI.Repos;
 using RoyaleTrackerClasses;
 using System;
@@ -12,20 +13,20 @@ namespace Tests
     [TestFixture]
     class UsersTests
     {
-        ClashContext fakeContext;
+        TRContext fakeContext;
         UserRepo repo;
-        List<User> users;
         public UsersTests()
         {
 
             //creates sudo options for the fake context
-            var options = new DbContextOptionsBuilder<ClashContext>()
+            var options = new DbContextOptionsBuilder<TRContext>()
                 .UseInMemoryDatabase(databaseName: "ClashAPI")
                 .Options;
 
-            fakeContext = new ClashContext(options);
+            fakeContext = new TRContext(options);
             //seed data for fake DB
             fakeContext.Users.Add(new User() { Username = "admin1", Password = "password1", Role = "Admin", Token = Guid.NewGuid().ToString() });
+            fakeContext.Users.Add(new User() { Username = "user3", Password = "password3", Role = "User" });
             fakeContext.Users.Add(new User() { Username = "user2", Password = "password2", Role = "User" });
             fakeContext.Users.Add(new User() { Username = "user1", Password = "password1", Role = "User" });
             fakeContext.SaveChanges();
@@ -46,7 +47,7 @@ namespace Tests
         [Test]
         public void GetAllTest()
         {
-            users = repo.GetAllUsers();
+            List<User> users = repo.GetAllUsers();
             Assert.IsTrue(users.Count > 0);
         }
 
@@ -91,6 +92,20 @@ namespace Tests
         {
             string token = repo.GetUserToken("admin1");
             Assert.IsNotNull(token);
+        }
+
+        //update is done by changing a fetched EF Core class and then saving the context
+        [Test]
+        public void UpdateUserTest()
+        {
+            User user = repo.GetUserByUsername("user3");
+
+            user.Password = "CHANGED";
+            fakeContext.SaveChanges();
+
+            User updatedUser = repo.GetUserByUsername("user3");
+
+            Assert.AreEqual(updatedUser.Password, "CHANGED");
         }
     }
 }

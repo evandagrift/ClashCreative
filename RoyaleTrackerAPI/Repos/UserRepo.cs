@@ -1,4 +1,5 @@
-﻿using RoyaleTrackerClasses;
+﻿using RoyaleTrackerAPI.Models;
+using RoyaleTrackerClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,33 +9,44 @@ namespace RoyaleTrackerAPI.Repos
 {
     public class UserRepo : IUserRepo
     {
-        private ClashContext context;
+        private TRContext context;
         
-        public UserRepo(ClashContext c)
+        public UserRepo(TRContext c)
         {
             context = c;
         }
-        public List<User> GetAllUsers()
-        {
 
-            return context.Users.ToList();
-        }
+        //create
         public void AddUser(User user)
         {
             context.Add(user);
         }
 
-        public void DeleteUser(string username)
-        {
-            User user = GetUserByUsername(username);
-            context.Users.Remove(user);
-        }
-
+        //read byID
         public User GetUserByUsername(string username)
         {
             return context.Users.Find(username);
         }
 
+        //read all
+        public List<User> GetAllUsers()
+        {
+
+            return context.Users.ToList();
+        }
+
+
+        //delete
+        public void DeleteUser(string username)
+        {
+            User user = GetUserByUsername(username);
+            if (user != null)
+            {
+                context.Users.Remove(user);
+            }
+        }
+
+        //token
         public string GetUserToken(string username)
         {
             //get user by username
@@ -47,5 +59,6 @@ namespace RoyaleTrackerAPI.Repos
             }
             return user.Token;
         }
+
     }
 }

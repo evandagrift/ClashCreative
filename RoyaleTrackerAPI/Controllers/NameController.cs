@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RoyaleTrackerAPI.Models;
 using RoyaleTrackerClasses;
 using System.Collections.Generic;
 
@@ -13,9 +14,9 @@ namespace RoyaleTrackerAPI.Controllers
     public class NameController : ControllerBase
     {
         private readonly ICustomAuthenticationManager customAuthenticationManager;
-        ClashContext context;
+        TRContext context;
 
-        public NameController(ICustomAuthenticationManager customAuthenticationManager, ClashContext context)
+        public NameController(ICustomAuthenticationManager customAuthenticationManager, TRContext context)
         {
             this.customAuthenticationManager = customAuthenticationManager;
             this.context = context;

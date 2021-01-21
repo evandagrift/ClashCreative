@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RoyaleTrackerAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,8 +17,8 @@ namespace RoyaleTrackerAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ICustomAuthenticationManager customAuthenticationManager;
-        ClashContext context;
-        public UsersController(ICustomAuthenticationManager customAuthenticationManager, ClashContext context)
+        TRContext context;
+        public UsersController(ICustomAuthenticationManager customAuthenticationManager, TRContext context)
         {
             this.customAuthenticationManager = customAuthenticationManager;
             this.context = context;
