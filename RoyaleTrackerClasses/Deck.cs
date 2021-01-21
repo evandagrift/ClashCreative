@@ -103,18 +103,6 @@ namespace RoyaleTrackerClasses
             }
         }
 
-        public void SetCards(ClashContext context)
-        {
-            Card1 = context.Cards.Find(Card1Id);
-            Card2 = context.Cards.Find(Card2Id);
-            Card3 = context.Cards.Find(Card3Id);
-            Card4 = context.Cards.Find(Card4Id);
-            Card5 = context.Cards.Find(Card5Id);
-            Card6 = context.Cards.Find(Card6Id);
-            Card7 = context.Cards.Find(Card7Id);
-            Card8 = context.Cards.Find(Card8Id);
-
-        }
         public override string ToString()
         {
             if (Card1Id < 1 || Card2Id < 1 || Card3Id < 1 || Card4Id < 1 || Card5Id < 1 || Card6Id < 1 || Card7Id < 1 || Card8Id < 1) { return ""; }

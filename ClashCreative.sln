@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClashCreative", "ClashCreative\ClashCreative.csproj", "{F6EA7CD5-EE00-4170-967C-62D10A3DFD67}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C03F88D0-6B39-4EB4-9B7B-D556B1BA8189}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -14,16 +12,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoyaleTrackerAPI", "RoyaleT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoyaleTrackerClasses", "RoyaleTrackerClasses\RoyaleTrackerClasses.csproj", "{DEC377EB-46B3-4AB0-8737-A6645C3FE70C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{7A5603AA-3818-430F-B143-D29B506A301E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DEC377EB-46B3-4AB0-8737-A6645C3FE70C} = {DEC377EB-46B3-4AB0-8737-A6645C3FE70C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F6EA7CD5-EE00-4170-967C-62D10A3DFD67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6EA7CD5-EE00-4170-967C-62D10A3DFD67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6EA7CD5-EE00-4170-967C-62D10A3DFD67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6EA7CD5-EE00-4170-967C-62D10A3DFD67}.Release|Any CPU.Build.0 = Release|Any CPU
 		{928A76B5-35E3-47D2-9960-A4034B4995BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{928A76B5-35E3-47D2-9960-A4034B4995BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{928A76B5-35E3-47D2-9960-A4034B4995BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,6 +31,10 @@ Global
 		{DEC377EB-46B3-4AB0-8737-A6645C3FE70C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEC377EB-46B3-4AB0-8737-A6645C3FE70C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEC377EB-46B3-4AB0-8737-A6645C3FE70C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A5603AA-3818-430F-B143-D29B506A301E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A5603AA-3818-430F-B143-D29B506A301E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A5603AA-3818-430F-B143-D29B506A301E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A5603AA-3818-430F-B143-D29B506A301E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
