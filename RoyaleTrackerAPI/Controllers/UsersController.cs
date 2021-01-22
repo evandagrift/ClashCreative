@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RoyaleTrackerAPI.Models;
+using RoyaleTrackerClasses;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,42 +23,48 @@ namespace RoyaleTrackerAPI.Controllers
         public UsersController(ICustomAuthenticationManager customAuthenticationManager, TRContext context)
         {
             this.customAuthenticationManager = customAuthenticationManager;
-            this.context = context;
+            // commented out while testing 
+            //this.context = context;
+
+            // plug in fake context
+            //seed an Admin User
+            
+
+
         }
-        // GET: api/<UsersController>
+                                      
+        [Authorize(Policy = "All")]
+        // GET: api/<NameController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            //get all users via repo
-            var users = context.Users.ToList();
-            List<string> usersJson = new List<string>();
-            users.ForEach(u => { usersJson.Add(JsonConvert.SerializeObject(u)); } );
-            return usersJson;
+            return new string[] { "value1", "value2" };
         }
 
-        // GET api/<UsersController>/5
-        [HttpGet("{id}")]
+        // GET api/<NameController>/5
+        [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<UsersController>
+        // POST api/<CardController>
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] User value)
         {
         }
-
-        // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody] User userCred)
         {
-        }
+            var token = customAuthenticationManager.Authenticate(userCred.Username, userCred.Password, context);
 
-        // DELETE api/<UsersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            if(token == null)
+                return Unauthorized();
+            
+
+            return Ok(token);
         }
     }
 }

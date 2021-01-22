@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿/**using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoyaleTrackerAPI.Models;
 using RoyaleTrackerClasses;
@@ -59,3 +59,4 @@ namespace RoyaleTrackerAPI.Controllers
 
     }
 }
+*/

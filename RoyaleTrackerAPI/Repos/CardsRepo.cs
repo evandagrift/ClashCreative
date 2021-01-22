@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace RoyaleTrackerAPI.Repos
 {
-    public class CardRepo : ICardRepo
+    public class CardsRepo : ICardsRepo
     {
         private TRContext context;
 
-        public CardRepo(TRContext c)
+        public CardsRepo(TRContext c)
         {
             context = c;
         }

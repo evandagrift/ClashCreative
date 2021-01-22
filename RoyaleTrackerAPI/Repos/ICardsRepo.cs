@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RoyaleTrackerAPI.Repos
 {
-    interface ICardRepo
+    interface ICardsRepo
     {
         void AddCard(Card card);
         List<Card> GetAllCards();

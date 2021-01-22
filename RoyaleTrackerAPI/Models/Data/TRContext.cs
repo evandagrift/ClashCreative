@@ -17,7 +17,7 @@ namespace RoyaleTrackerAPI.Models
         public DbSet<Deck> Decks { get; set; }
         public DbSet<Battle> Battles { get; set; }
         public DbSet<GameMode> GameModes { get; set; }
-        public DbSet<TeamMember> TeamMembers { get; set; }
+        public DbSet<Team> Teams { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }

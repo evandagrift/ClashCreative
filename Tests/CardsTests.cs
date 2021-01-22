@@ -13,7 +13,7 @@ namespace Tests
     class CardsTests
     {
         TRContext fakeContext;
-        CardRepo repo;
+        CardsRepo repo;
 
         public CardsTests()
         {
@@ -29,7 +29,7 @@ namespace Tests
             fakeContext.Cards.Add(new Card() { Id = 004, Name = "test4" });
             fakeContext.SaveChanges();
 
-            repo = new CardRepo(fakeContext);
+            repo = new CardsRepo(fakeContext);
         }
 
         //test get all
