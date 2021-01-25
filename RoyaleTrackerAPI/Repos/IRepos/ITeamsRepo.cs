@@ -13,5 +13,6 @@ namespace RoyaleTrackerAPI.Repos
         List<Team> GetAllTeams();
         Team GetTeamByID(int teamID);
         void DeleteTeam(int teamID);
+        void UpdateTeam(Team team);
     }
 }

@@ -12,5 +12,6 @@ namespace RoyaleTrackerAPI.Repos
         List<Clan> GetAllClans();
         void AddClan(Clan clan);
         void DeleteClan(string clanTag);
+        void UpdateClan(Clan clan);
     }
 }

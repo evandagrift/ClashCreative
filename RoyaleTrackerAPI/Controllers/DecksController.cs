@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RoyaleTrackerAPI.Models;
 using RoyaleTrackerAPI.Repos;
@@ -17,42 +16,43 @@ namespace RoyaleTrackerAPI.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class DecksController : ControllerBase
     {
         //Authentication Manager for handling Bearer Token
         private readonly ICustomAuthenticationManager customAuthenticationManager;
 
         //context to DB and Repo for handling
         private TRContext context;
-        private UsersRepo repo;
+        private DecksRepo repo;
 
         //loading in injected dependancies
-        public UsersController(ICustomAuthenticationManager m, TRContext c)
+        public DecksController(ICustomAuthenticationManager m, TRContext c)
         {
             customAuthenticationManager = m;
             // commented out while testing 
             context = c;
 
             //init the repo with DB context
-            repo = new UsersRepo(context);
+            repo = new DecksRepo(context);
         }
-        // POST api/<CardController>
+
+        // POST api/Decks
         [Authorize(Policy = "AdminOnly")]
         [HttpPost]
-        public void PostUser([FromBody] User user)
+        public void Post([FromBody] Deck deck)
         {
-            repo.AddUser(user);
+            repo.AddDeck(deck);
             context.SaveChanges();
         }
 
         [Authorize(Policy = "AdminOnly")]
-        // GET: api/<NameController>
+        // GET: api/Decks
         [HttpGet]
-        public string GetUsers()
+        public string Get()
         {
-            List<User> users = repo.GetAllUsers();
+            List<Deck> decks = repo.GetAllDecks();
 
-            return JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
+            return JsonConvert.SerializeObject(decks, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -60,12 +60,12 @@ namespace RoyaleTrackerAPI.Controllers
         }
 
         [Authorize(Policy = "AdminOnly")]
-        // GET api/<NameController>/5
-        [HttpGet("{username}", Name = "GetUser")]
-        public string GetUser(string username)
+        // GET api/Decks/deckTag
+        [HttpGet("{deckID}", Name = "GetDeck")]
+        public string Get(int deckID)
         {
-            User user = repo.GetUserByUsername(username);
-            return JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
+            Deck deck = repo.GetDeckByID(deckID);
+            return JsonConvert.SerializeObject(deck, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -73,35 +73,22 @@ namespace RoyaleTrackerAPI.Controllers
 
 
         [Authorize(Policy = "AdminOnly")]
-        // DELETE: api/Products/5
-        [HttpDelete("{username}")]
-        public void DeleteUser(string username)
+        // DELETE: api/Decks/{deckTag}
+        [HttpDelete("{deckID}")]
+        public void Delete(int deckID)
         {
-            repo.DeleteUser(username);
+            repo.DeleteDeck(deckID);
             context.SaveChanges();
         }
 
         [Authorize(Policy = "AdminOnly")]
-        // DELETE: api/Products/5
+        // Update: api/Decks
         [HttpPut]
-        public void UpdateUser([FromBody] User user)
+        public void Update([FromBody] Deck deck)
         {
-            repo.UpdateUser(user);
+            repo.UpdateDeck(deck);
             context.SaveChanges();
         }
 
-
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] User userCred)
-        {
-            var token = customAuthenticationManager.Authenticate(userCred.Username, userCred.Password, context);
-
-            if(token == null)
-                return Unauthorized();
-            
-
-            return Ok(token);
-        }
     }
 }

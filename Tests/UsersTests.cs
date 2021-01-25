@@ -14,7 +14,7 @@ namespace Tests
     class UsersTests
     {
         TRContext fakeContext;
-        UserRepo repo;
+        UsersRepo repo;
         public UsersTests()
         {
 
@@ -33,7 +33,7 @@ namespace Tests
             //fake context for testing
 
             //init the repo for testing`
-            repo = new UserRepo(fakeContext);
+            repo = new UsersRepo(fakeContext);
 
         }
 

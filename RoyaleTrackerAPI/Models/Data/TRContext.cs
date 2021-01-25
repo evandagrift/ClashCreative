@@ -9,8 +9,10 @@ namespace RoyaleTrackerAPI.Models
 {
     public class TRContext : DbContext
     {
+        //DB Context using EF Core
         public TRContext(DbContextOptions<TRContext> options) : base(options) { }
 
+        //Each Table is Generated off the Classes in DBSets
         public DbSet<Player> Players { get; set; }
         public DbSet<Clan> Clans { get; set; }
         public DbSet<Card> Cards { get; set; }

@@ -1,4 +1,5 @@
 ﻿using RoyaleTrackerAPI.Models;
+using RoyaleTrackerClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,7 @@ namespace RoyaleTrackerAPI
     public interface ICustomAuthenticationManager
     {
         string Authenticate(string username, string password, TRContext context);
-        
-        IDictionary<string, Tuple<string,string>> Tokens { get; }
+        User GetUserByToken(string token, TRContext context);
 
     }
 }

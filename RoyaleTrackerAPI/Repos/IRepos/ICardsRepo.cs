@@ -12,5 +12,6 @@ namespace RoyaleTrackerAPI.Repos
         List<Card> GetAllCards();
         Card GetCardByID(int cardID);
         void DeleteCard(int cardID);
+        void UpdateCard(Card card);
     }
 }

@@ -12,5 +12,6 @@ namespace RoyaleTrackerAPI.Repos
         List<Player> GetAllPlayers();
         Player GetPlayerByTag(string playerTag);
         void DeletePlayer(string playerTag);
+        void UpdatePlayer(Player player);
     }
 }

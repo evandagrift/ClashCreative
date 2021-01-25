@@ -9,31 +9,44 @@ namespace RoyaleTrackerAPI.Repos
 {
     public class CardsRepo : ICardsRepo
     {
+        //Access to DB
         private TRContext context;
 
-        public CardsRepo(TRContext c)
-        {
-            context = c;
-        }
-        public void AddCard(Card card)
-        {
-            context.Add(card);
-        }
+        //Constructor assigning argumented context
+        public CardsRepo(TRContext c) { context = c; }
 
+        //adds given card to context
+        public void AddCard(Card card) { context.Add(card); }
+
+        //deletes card at given cardID
         public void DeleteCard(int cardID)
         {
+            //fetches card with given cardID
             Card cardToDelete = GetCardByID(cardID);
-            context.Cards.Remove(cardToDelete);
+
+            //if a valid card is fetched from the database that card is removed from the context
+            if(cardToDelete != null)
+                context.Cards.Remove(cardToDelete);
         }
 
-        public List<Card> GetAllCards()
-        {
-            return context.Cards.ToList();
-        }
+        //returns a list of all cards in DB
+        public List<Card> GetAllCards() { return context.Cards.ToList(); }
 
-        public Card GetCardByID(int cardID)
+        //returns Card from Db with given Card ID
+        public Card GetCardByID(int cardID) { return context.Cards.Find(cardID); }
+
+        //updates card at given ID
+        public void UpdateCard(Card card)
         {
-            return context.Cards.Find(cardID);
+            //fetches card with given ID
+            Card cardToUpdate = GetCardByID(card.Id);
+
+            //if a valid card is fetched from the DB that card is Updated
+            if(cardToUpdate != null)
+            {
+                cardToUpdate.Name = card.Name;
+                cardToUpdate.Url = cardToUpdate.Url;
+            }
         }
     }
 }

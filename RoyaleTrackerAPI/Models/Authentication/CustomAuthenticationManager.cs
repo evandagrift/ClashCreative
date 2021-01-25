@@ -9,18 +9,17 @@ namespace RoyaleTrackerAPI
 {
     public class CustomAuthenticationManager : ICustomAuthenticationManager
     {
-        //Note:Replace with DB Link
-        private readonly IList<User> users = new List<User>
+        //I Don't fully understand this, but Authentication is essential
+        public User GetUserByToken(string token, TRContext context)
         {
-            new User {Username = "test1", Password = "pass1", Role = "Admin"},
-            new User {Username = "test2", Password = "pass2", Role = "User"}
-        };
+            User userToReturn = new User() {Token = token };
+            userToReturn = context.Users.Where(u => u.Token == token).FirstOrDefault();
 
-        private readonly IDictionary<string, Tuple<string,string>> tokens = 
-            new Dictionary<string, Tuple<string, string>>();
+            if(userToReturn!=null)
+                userToReturn.Password = null;
 
-        public IDictionary<string, Tuple<string, string>> Tokens => tokens;
-
+            return userToReturn; 
+        }
 
         public string Authenticate(string username, string password, TRContext context)
         {
@@ -34,10 +33,9 @@ namespace RoyaleTrackerAPI
             }
 
             if(user.Token == null)
-            { 
+            {  
                 user.Token = Guid.NewGuid().ToString();
-                context.Users.Add(user);
-                context.SaveChangesAsync();
+                context.SaveChanges();
             }
             return user.Token;
         }

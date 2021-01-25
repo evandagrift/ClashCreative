@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace RoyaleTrackerAPI.Repos
 {
-    interface IDeckRepo
+    interface IDecksRepo
     {
-        Deck GetDeckById(int deckID);
+        Deck GetDeckByID(int deckID);
         List<Deck> GetAllDecks();
         void AddDeck(Deck deck);
         void DeleteDeck(int deckID);
+        void UpdateDeck(Deck deck);
     }
 }

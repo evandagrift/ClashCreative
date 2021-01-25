@@ -30,9 +30,5 @@
     <ProjectReference Include="..\RoyaleTrackerClasses\RoyaleTrackerClasses.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Props\" />
-  </ItemGroup>
-
 
 </Project>

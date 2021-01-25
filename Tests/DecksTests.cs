@@ -13,7 +13,7 @@ namespace Tests
     class DecksTests
     {
         TRContext fakeContext;
-        DeckRepo repo;
+        DecksRepo repo;
         public DecksTests()
         {
             //creates sudo options for the fake context
@@ -28,13 +28,13 @@ namespace Tests
 
             fakeContext.Decks.Add(new Deck() { DeckId = 003, Card1Id = 003 });
             fakeContext.SaveChanges();
-            repo = new DeckRepo(fakeContext);
+            repo = new DecksRepo(fakeContext);
         }
 
         [Test]
         public void GetDeckTest()
         {
-            Deck deck = repo.GetDeckById(001);
+            Deck deck = repo.GetDeckByID(001);
             Assert.AreEqual(deck.Card1Id, 001);
         }
 
@@ -52,7 +52,7 @@ namespace Tests
             repo.AddDeck(deck);
             fakeContext.SaveChanges();
 
-            Deck returnedDeck = repo.GetDeckById(004);
+            Deck returnedDeck = repo.GetDeckByID(004);
             Assert.AreEqual(returnedDeck.Card1Id, 004);
         }
         [Test]
@@ -61,19 +61,19 @@ namespace Tests
             repo.DeleteDeck(002);
             fakeContext.SaveChanges();
 
-            Deck deletedDeck = repo.GetDeckById(002);
+            Deck deletedDeck = repo.GetDeckByID(002);
             Assert.IsNull(deletedDeck);
         }
 
         [Test]
         public void UpdateDeckTest()
         {
-            Deck deck = repo.GetDeckById(003);
+            Deck deck = repo.GetDeckByID(003);
             deck.Card2Id = 003;
 
             fakeContext.SaveChanges();
 
-            Deck updatedDeck = repo.GetDeckById(003);
+            Deck updatedDeck = repo.GetDeckByID(003);
         }
 
 

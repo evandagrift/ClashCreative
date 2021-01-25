@@ -8,9 +8,10 @@ namespace RoyaleTrackerAPI.Repos
 {
     interface IBattlesRepo
     {
-        void AddBattle(Battle Battle);
+        void AddBattle(Battle battle);
         List<Battle> GetAllBattles();
-        Battle GetBattleByID(int BattleID);
-        void DeleteBattle(int BattleID);
+        Battle GetBattleByID(int battleID);
+        void DeleteBattle(int battleID);
+        void UpdateBattle(Battle battle);
     }
 }

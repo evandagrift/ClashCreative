@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RoyaleTrackerAPI.Models;
 using RoyaleTrackerAPI.Repos;
@@ -17,42 +16,42 @@ namespace RoyaleTrackerAPI.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class ClansController : ControllerBase
     {
         //Authentication Manager for handling Bearer Token
         private readonly ICustomAuthenticationManager customAuthenticationManager;
 
         //context to DB and Repo for handling
         private TRContext context;
-        private UsersRepo repo;
+        private ClansRepo repo;
 
         //loading in injected dependancies
-        public UsersController(ICustomAuthenticationManager m, TRContext c)
+        public ClansController(ICustomAuthenticationManager m, TRContext c)
         {
             customAuthenticationManager = m;
             // commented out while testing 
             context = c;
 
             //init the repo with DB context
-            repo = new UsersRepo(context);
+            repo = new ClansRepo(context);
         }
-        // POST api/<CardController>
+        // POST api/Clans
         [Authorize(Policy = "AdminOnly")]
         [HttpPost]
-        public void PostUser([FromBody] User user)
+        public void Post([FromBody] Clan clan)
         {
-            repo.AddUser(user);
+            repo.AddClan(clan);
             context.SaveChanges();
         }
 
         [Authorize(Policy = "AdminOnly")]
-        // GET: api/<NameController>
+        // GET: api/Clans
         [HttpGet]
-        public string GetUsers()
+        public string Get()
         {
-            List<User> users = repo.GetAllUsers();
+            List<Clan> clans = repo.GetAllClans();
 
-            return JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
+            return JsonConvert.SerializeObject(clans, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -60,12 +59,12 @@ namespace RoyaleTrackerAPI.Controllers
         }
 
         [Authorize(Policy = "AdminOnly")]
-        // GET api/<NameController>/5
-        [HttpGet("{username}", Name = "GetUser")]
-        public string GetUser(string username)
+        // GET api/Clans/clanTag
+        [HttpGet("{clantag}", Name = "GetClan")]
+        public string Get(string clantag)
         {
-            User user = repo.GetUserByUsername(username);
-            return JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
+            Clan clan = repo.GetClanByTag(clantag);
+            return JsonConvert.SerializeObject(clan, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -73,35 +72,22 @@ namespace RoyaleTrackerAPI.Controllers
 
 
         [Authorize(Policy = "AdminOnly")]
-        // DELETE: api/Products/5
-        [HttpDelete("{username}")]
-        public void DeleteUser(string username)
+        // DELETE: api/Clans/{clanTag}
+        [HttpDelete("{ClanTag}")]
+        public void Delete(string clanTag)
         {
-            repo.DeleteUser(username);
+            repo.DeleteClan(clanTag);
             context.SaveChanges();
         }
 
         [Authorize(Policy = "AdminOnly")]
-        // DELETE: api/Products/5
+        // Update: api/Clans
         [HttpPut]
-        public void UpdateUser([FromBody] User user)
+        public void Update([FromBody] Clan clan)
         {
-            repo.UpdateUser(user);
+            repo.UpdateClan(clan);
             context.SaveChanges();
         }
 
-
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] User userCred)
-        {
-            var token = customAuthenticationManager.Authenticate(userCred.Username, userCred.Password, context);
-
-            if(token == null)
-                return Unauthorized();
-            
-
-            return Ok(token);
-        }
     }
 }

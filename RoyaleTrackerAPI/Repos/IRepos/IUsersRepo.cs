@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RoyaleTrackerAPI.Repos
 {
-    public interface IUserRepo
+    public interface IUsersRepo
     {
         void AddUser(User user); //Create User
         List<User> GetAllUsers(); // Get All Users
@@ -16,5 +16,6 @@ namespace RoyaleTrackerAPI.Repos
         void DeleteUser(string username); //Delete user by ID
 
         string GetUserToken(string username); //Retrieve Token  
+        void UpdateUser(User user);
     }
 }

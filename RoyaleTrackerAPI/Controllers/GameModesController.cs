@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RoyaleTrackerAPI.Models;
 using RoyaleTrackerAPI.Repos;
@@ -17,42 +16,43 @@ namespace RoyaleTrackerAPI.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class GameModesController : ControllerBase
     {
         //Authentication Manager for handling Bearer Token
         private readonly ICustomAuthenticationManager customAuthenticationManager;
 
         //context to DB and Repo for handling
         private TRContext context;
-        private UsersRepo repo;
+        private GameModesRepo repo;
 
         //loading in injected dependancies
-        public UsersController(ICustomAuthenticationManager m, TRContext c)
+        public GameModesController(ICustomAuthenticationManager m, TRContext c)
         {
             customAuthenticationManager = m;
             // commented out while testing 
             context = c;
 
             //init the repo with DB context
-            repo = new UsersRepo(context);
+            repo = new GameModesRepo(context);
         }
-        // POST api/<CardController>
+
+        // POST api/GameModes
         [Authorize(Policy = "AdminOnly")]
         [HttpPost]
-        public void PostUser([FromBody] User user)
+        public void Post([FromBody] GameMode gameMode)
         {
-            repo.AddUser(user);
+            repo.AddGameMode(gameMode);
             context.SaveChanges();
         }
 
         [Authorize(Policy = "AdminOnly")]
-        // GET: api/<NameController>
+        // GET: api/GameModes
         [HttpGet]
-        public string GetUsers()
+        public string Get()
         {
-            List<User> users = repo.GetAllUsers();
+            List<GameMode> gameModes = repo.GetAllGameModes();
 
-            return JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
+            return JsonConvert.SerializeObject(gameModes, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -60,12 +60,12 @@ namespace RoyaleTrackerAPI.Controllers
         }
 
         [Authorize(Policy = "AdminOnly")]
-        // GET api/<NameController>/5
-        [HttpGet("{username}", Name = "GetUser")]
-        public string GetUser(string username)
+        // GET api/GameModes/gameModeTag
+        [HttpGet("{gameModeID}", Name = "GetGameMode")]
+        public string Get(int gameModeID)
         {
-            User user = repo.GetUserByUsername(username);
-            return JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
+            GameMode gameMode = repo.GetGameModeByID(gameModeID);
+            return JsonConvert.SerializeObject(gameMode, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -73,35 +73,22 @@ namespace RoyaleTrackerAPI.Controllers
 
 
         [Authorize(Policy = "AdminOnly")]
-        // DELETE: api/Products/5
-        [HttpDelete("{username}")]
-        public void DeleteUser(string username)
+        // DELETE: api/GameModes/{gameModeTag}
+        [HttpDelete("{gameModeID}")]
+        public void Delete(int gameModeID)
         {
-            repo.DeleteUser(username);
+            repo.DeleteGameMode(gameModeID);
             context.SaveChanges();
         }
 
         [Authorize(Policy = "AdminOnly")]
-        // DELETE: api/Products/5
+        // Update: api/GameModes
         [HttpPut]
-        public void UpdateUser([FromBody] User user)
+        public void Update([FromBody] GameMode gameMode)
         {
-            repo.UpdateUser(user);
+            repo.UpdateGameMode(gameMode);
             context.SaveChanges();
         }
 
-
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] User userCred)
-        {
-            var token = customAuthenticationManager.Authenticate(userCred.Username, userCred.Password, context);
-
-            if(token == null)
-                return Unauthorized();
-            
-
-            return Ok(token);
-        }
     }
 }
